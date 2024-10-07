@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lumoshive Academy</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .container {
+            width: 80%;
+            margin: auto;
+            overflow: hidden;
+            padding: 20px;
+        }
+        
+        header {
+            background: #f4f4f4;
+            padding: 1rem;
+        }
+        
+        header nav ul {
+            list-style-type: none;
+        }
+        
+        header nav ul li {
+            display: inline-block;
+            margin-right: 10px;
+        }
+        
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+        
+        .programmer-section {
+            margin-bottom: 20px;
+        }
+        
+        .gallery {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+        
+        .gallery img {
+            width: 30%;
+            margin-bottom: 20px;
+        }
+        
+        form {
+            margin-top: 20px;
+        }
+        
+        input,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <h1>Lumoshive Academy</h1>
+            <nav>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#service">Service</a></li>
+                    <li><a href="#gallery">Gallery</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <section id="home">
+            <h2>Belajar Kode Raih Masa depan</h2>
+            <p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Maxime, praesentium.</p>
+            <a href="#contact" class="btn">Registrasi</a>
+            <img src="https://static.vecteezy.com/system/resources/previews/007/252/201/non_2x/man-working-on-computer-at-home-free-vector.jpg" alt="Person coding">
+        </section>
+
+        <section id="service">
+            <h2>Service</h2>
+            <div class="programmer-section">
+                <h3>Backend programmer</h3>
+                <img src="https://img.freepik.com/free-vector/programmer-good-coding-developer-programming-with-laptop-seat-work-from-home_40876-2624.jpg?ga=GA1.1.1686824044.1727381838&semt=ais_hybrid" alt="Backend programmer">
+                <p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Voluptatibus, veniam.</p>
+            </div>
+            <div class="programmer-section">
+                <h3>Frontend programmer</h3>
+                <img src="https://img.freepik.com/premium-vector/young-individual-is-focused-coding-their-laptop-immersed-colorful-environment-filled-with-data-visualizations-green-plants_538213-121562.jpg?ga=GA1.1.1686824044.1727381838&semt=ais_hybrid" alt="Frontend programmer">
+                <p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Voluptatibus, veniam.</p>
+            </div>
+            <div class="programmer-section">
+                <h3>Fullstack programmer</h3>
+                <img src="https://img.freepik.com/free-vector/programmer-working-isometric-style_52683-16729.jpg?ga=GA1.1.1686824044.1727381838&semt=ais_hybrid" alt="Fullstack programmer">
+                <p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Voluptatibus, veniam.</p>
+            </div>
+            <div class="programmer-section">
+                <h3>DevOps programmer</h3>
+                <img src="https://img.freepik.com/premium-vector/cartoon-man-with-glasses-computer-monitor-with-purple-background_1230457-17773.jpg?ga=GA1.1.1686824044.1727381838&semt=ais_hybrid" alt="DevOps programmer">
+                <p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Voluptatibus, veniam.</p>
+            </div>
+        </section>
+
+        <section id="gallery">
+            <h2>Galery</h2>
+            <div class="gallery">
+                <img src="https://img.freepik.com/free-vector/hand-drawn-web-developers_23-2148819604.jpg?ga=GA1.1.1686824044.1727381838&semt=ais_hybrid" alt="Gallery image 1">
+                <img src="https://img.freepik.com/free-vector/hand-drawn-web-developers_23-2148819604.jpg?ga=GA1.1.1686824044.1727381838&semt=ais_hybrid" alt="Gallery image 2">
+                <img src="https://img.freepik.com/free-vector/hand-drawn-web-developers_23-2148819604.jpg?ga=GA1.1.1686824044.1727381838&semt=ais_hybrid" alt="Gallery image 3">
+                <img src="https://img.freepik.com/free-vector/hand-drawn-web-developers_23-2148819604.jpg?ga=GA1.1.1686824044.1727381838&semt=ais_hybrid" alt="Gallery image 4">
+            </div>
+        </section>
+
+        <section id="about">
+            <h2>About</h2>
+            <h3>Find out about us</h3>
+            <img src="https://img.freepik.com/free-vector/young-man-it-programmer-laptop-computer-writes-code_24797-1629.jpg?ga=GA1.1.1686824044.1727381838&semt=ais_hybrid" alt="About us image">
+            <h3>Lumoshive academy</h3>
+            <p>Lorem ipsum dolor sit amet consectetur, adipiscing elit. Ab, beatae laboriosam. Minus veritatis adipisci quod dolorum expedita? Ea corporis quasi vel laborum odit magnam voluptas unde obcaecati, nam sint dolore possimus dolores nostrum inventore,
+                et cum! Eum beatae vel inventore quo necessitatibus! Vitae nulla minima repudiandae veritatis architecto esse quidem!</p>
+        </section>
+
+        <section id="contact">
+            <h2>Contact</h2>
+            <p>Need Help? Contact Us</p>
+            <form>
+                <input type="text" placeholder="Name" required>
+                <input type="email" placeholder="Email" required>
+                <input type="text" placeholder="Subject" required>
+                <textarea placeholder="Message" required></textarea>
+                <button type="submit">Send</button>
+            </form>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Lumoshive academy. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+
+</html>

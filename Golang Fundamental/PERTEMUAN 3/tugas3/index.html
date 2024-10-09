@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Input dan List Data</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <nav>
+        <ul>
+            <li><a href="#" onclick="showPage('input')">Input Data</a></li>
+            <li><a href="#" onclick="showPage('list')">List Data</a></li>
+        </ul>
+    </nav>
+    <div id="content">
+        <div id="inputPage" class="page">
+            <h2>Form Input</h2>
+            <form id="dataForm">
+                <label for="dataInput">Name</label>
+                <input type="text" id="dataInput" placeholder="name..." required>
+                <button type="submit">SAVE</button>
+            </form>
+        </div>
+
+        <!-- Halaman List Data -->
+        <div id="listPage" class="page" style="display: none;">
+            <h2>Daftar Nama</h2>
+            <ul id="dataList"></ul>
+        </div>
+    </div>
+
+
+    <script src="script.js"></script>
+</body>
+
+</html>

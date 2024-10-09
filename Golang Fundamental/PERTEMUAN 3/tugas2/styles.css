@@ -1,0 +1,50 @@
+@font-face {
+    font-family: 'Poppins-Bold';
+    src: url('../asset/font/Poppins-Bold.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+    font-family: 'Poppins-Bold';
+    background-color: #f0f0f0;
+    margin: 0;
+    padding: 20px;
+}
+
+.container {
+    max-width: 300px;
+    margin: 0 auto;
+}
+
+.text-item {
+    background-color: #e0e0e0;
+    padding: 10px;
+    margin: 5px 0;
+    display: flex;
+    justify-content: space-between;
+}
+
+input,
+button {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+    box-sizing: border-box;
+}
+
+button {
+    background-color: #1239e9;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.delete-btn {
+    background-color: #f44336;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    max-width: 50px;
+}

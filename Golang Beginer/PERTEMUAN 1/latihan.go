@@ -1,24 +1,27 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"strconv"
+)
 
-func main() {
-	hargaJual := 150000.0
-	hargaBeli := 100000.0
-	biayaOperasional := 1000.0
-	diskon := 15.0
-	jumlahTerjual := 100
+func main_test() {
+	// buat 4 variabel, int, float32, int, float32
+	// int 30, float32 24.5, int -45, float32 0.67
+	// hitung matematika buat var baru
+	// a + b * c / d
+	// hasilnya dikonversi ke string
 
-	harga_diskon := hargaJual - (hargaJual * diskon / 100)
+	a := 30
+	b := float32(24.5)
+	c := -45
+	d := float32(0.67)
 
-	total_pendapatan := harga_diskon * float64(jumlahTerjual)
+	// perhitungan
+	hasil := float32(a) + b*float32(c)/d
 
-	total_biaya := (hargaBeli * float64(jumlahTerjual)) + (biayaOperasional * float64(jumlahTerjual))
+	// var str4 string = strconv.FormatFloat(f2, 'f', 6, 64)
+	hasil_cvt := strconv.FormatFloat(float64(hasil), 'f', 6, 64)
 
-	total_keuntungan := total_pendapatan - total_biaya
-
-	fmt.Printf("Harga Jual Setelah Diskon: Rp %.0f\n", harga_diskon)
-	fmt.Printf("Total Pendapatan: Rp %.0f\n", total_pendapatan)
-	fmt.Printf("Total Biaya: Rp %.0f\n", total_biaya)
-	fmt.Printf("Total Keuntungan: Rp %.0f\n", total_keuntungan)
+	fmt.Println("Hasil: ", hasil_cvt)
 }

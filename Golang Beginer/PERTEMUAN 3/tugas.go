@@ -50,7 +50,7 @@ func (b Bajaj) nama() string {
 	return b.name
 }
 
-// Fungsi untuk mencari kendaraan efisien
+// Fungsi variadik untuk mencari kendaraan efisien
 func kendaraanEfisien(bensin int, kendaraan ...Kendaraan) (Kendaraan, int) {
 	var Kendaraan_ Kendaraan
 	maxJarak := 0
@@ -69,9 +69,9 @@ func main() {
 	// inisialisasi struct
 	motor := Motor{name: "Motor", kecepatan: 3}
 	mobil := Mobil{name: "Mobil", kecepatan: 1}
-	bajaj := Bajaj{name: "Bajaj", kecepatan: 4}
+	bajaj := Bajaj{name: "Bajaj", kecepatan: 1}
 
-	bensin := 20
+	bensin := 10
 
 	Kendaraan, jarak := kendaraanEfisien(bensin, motor, mobil, bajaj)
 

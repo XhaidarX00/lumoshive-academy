@@ -1,3 +1,3 @@
-module main.go
+module Project
 
 go 1.23.2

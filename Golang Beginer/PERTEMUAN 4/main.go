@@ -3,9 +3,9 @@ package main
 import (
 	// "errors"
 	"fmt"
-	// "main.go/model"
+	// "Project/model"
 	// "reflect"
-	// "main.go/testing"
+	// "Project/testing"
 )
 
 func main_() {

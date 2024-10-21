@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"main.go/model"
+	"Project/model"
 )
 
 func main() {
@@ -33,7 +33,7 @@ func main() {
 	}
 
 	// mengurangi saldo
-	errC := saldo1.CreditSaldo(10)
+	errC := saldo1.CreditSaldo(0)
 	if errC != nil {
 		fmt.Println("Error : ", errC)
 		return

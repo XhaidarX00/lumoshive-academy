@@ -3,7 +3,8 @@ package main
 import (
 	"fmt"
 	"main/utils"
-	"math/rand"
+
+	// "math/rand"
 	"time"
 )
 
@@ -16,9 +17,11 @@ func main() {
 	ticker := time.NewTicker(2 * time.Second)
 	batasSensor := BatasSensor{suhu: 20, kelembapan: 30, tekanan: 25}
 
-	go sensor("Sensor Suhu", suhuChan, done)
-	go sensor("Sensor Kecepatan", kelembapanChan, done)
-	go sensor("Sensor Tekanan", tekananChan, done)
+	// go sensor("Sensor Suhu", suhuChan, done)
+	// go sensor("Sensor Kelembapan", kelembapanChan, done)
+	// go sensor("Sensor Tekanan", tekananChan, done)
+
+	lastResponseTime := time.Now()
 
 	fmt.Println("\n ========= Mengambil data sensor ========= \n ")
 	for {
@@ -37,6 +40,15 @@ func main() {
 			return
 		case <-ticker.C:
 			fmt.Println("\n ========= Mengambil data sensor ========= \n ")
+			lastResponseTime = time.Now()
+			newAfterTime := lastResponseTime.Add(1 * time.Second)
+			time_msg := utils.ColorMessage("yellow", "Waktu :")
+			fmt.Printf("%s Before : %v\n", time_msg, lastResponseTime)
+			fmt.Printf("%s After : %v\n", time_msg, newAfterTime)
+
+			go sensor("Sensor Suhu", suhuChan, done, newAfterTime)
+			go sensor("Sensor Kelembapan", kelembapanChan, done, newAfterTime)
+			go sensor("Sensor Tekanan", tekananChan, done, newAfterTime)
 		}
 	}
 }
@@ -61,15 +73,30 @@ func (s BatasSensor) cekBatasan(angka int, data string) {
 	}
 }
 
-func sensor(name string, ch chan<- int, done chan<- bool) {
+// func sensor(name string, ch chan<- int, done chan<- bool) {
+// 	for {
+// 		select {
+// 		case <-time.After(5 * time.Second):
+// 			utils.ErrorMessage(fmt.Sprintf("%s timeout", name))
+// 			done <- true
+// 			return
+// 		case ch <- rand.Intn(100):
+// 			time.Sleep(2 * time.Second)
+// 		}
+// 	}
+// }
+
+func sensor(name string, ch chan<- int, done chan<- bool, afterTime time.Time) {
+
 	for {
 		select {
-		case <-time.After(5 * time.Second):
+		case <-time.After(time.Until(afterTime)):
 			utils.ErrorMessage(fmt.Sprintf("%s timeout", name))
 			done <- true
 			return
-		case ch <- rand.Intn(100):
-			time.Sleep(2 * time.Second)
+			// case ch <- rand.Intn(100):
+			// 	msg := utils.ColorMessage("blue", "Berhasil")
+			// 	utils.SuccesMessage(fmt.Sprintf("%s mengirimkan data %s", msg, name))
 		}
 	}
 }

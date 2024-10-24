@@ -1,0 +1,21 @@
+[{
+        "name": "Sepatu",
+        "Price": 50000
+    },
+    {
+        "name": "Baju",
+        "Price": 30000
+    },
+    {
+        "name": "Tas",
+        "Price": 35000
+    },
+    {
+        "name": "Topi",
+        "Price": 10000
+    },
+    {
+        "name": "Celana",
+        "Price": 25000
+    }
+]

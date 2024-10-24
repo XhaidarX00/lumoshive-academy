@@ -54,10 +54,13 @@ func (b *BankAccounts) AuthLogin(ctxv context.Context, keyUn string, keyPw strin
 		return ""
 	}
 
+	fmt.Printf("%s %s\n", un, pw)
+
 	for _, account := range b.Accounts {
 		if account.USERNAME == un {
 			if account.PASSWORD == pw {
 				utils.SuccesMessage("Login sukses. Selamat Berbelanja !!")
+				fmt.Println(account.IDCOSTUMER)
 				return account.IDCOSTUMER
 			} else {
 				utils.ErrorMessage("Password salah")
@@ -68,4 +71,18 @@ func (b *BankAccounts) AuthLogin(ctxv context.Context, keyUn string, keyPw strin
 
 	utils.ErrorMessage("Username tidak ditemukan")
 	return ""
+}
+
+func (b *BankAccounts) CheckAccount(un string, pw string) bool {
+	for _, account := range b.Accounts {
+		if account.USERNAME == un {
+			if account.PASSWORD == pw {
+				return true
+			} else {
+				return false
+			}
+		}
+	}
+
+	return false
 }

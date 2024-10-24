@@ -13,26 +13,28 @@ import (
 func main() {
 	utils.ClearScreen()
 	ctx := context.Background()
-	deadline := time.Now().Add(300 * time.Second)
+	deadline := time.Now().Add(10 * time.Second)
 	ctxWithCancel, cancel := context.WithDeadline(ctx, deadline)
 	defer cancel()
 
 	product := product.BankProductManager()
-	idCostumer, address := LoginHandler(ctx)
-	ctxWithValue := context.WithValue(ctx, "IDCOSTUMER", idCostumer)
-	ctxWithValue = context.WithValue(ctxWithValue, "ADDRESS", address)
+	ctxWithValue := LoginHandler(ctx)
+	// fmt.Println("Id custom : ", idCostumer)
+	// ctxWithValue := context.WithValue(ctx, "IDCOSTUMER", idCostumer)
+	// ctxWithValue = context.WithValue(ctxWithValue, "ADDRESS", address)
 
 	menu(ctxWithCancel, product, ctxWithValue)
 
 }
 
-func LoginHandler(ctx context.Context) (string, string) {
+func LoginHandler(ctx context.Context) context.Context {
 	var username string
 	var password string
 	var address string
 	account := auth.BankAccountManager()
 
 	for {
+		account.DisplayAccounts()
 		fmt.Println("=---------------= 🔑 Login 🔑 =---------------=")
 		fmt.Print("Masukan Username : ")
 		fmt.Scan(&username)
@@ -42,13 +44,30 @@ func LoginHandler(ctx context.Context) (string, string) {
 		fmt.Scan(&address)
 		utils.ClearScreen()
 
-		ctxWithValue := context.WithValue(ctx, "adminUn", username)
-		ctxWithValue = context.WithValue(ctxWithValue, "adminPw", password)
+		UN, okUN := ctx.Value(fmt.Sprintf("Un%s", username)).(string)
+		PW, okPW := ctx.Value(fmt.Sprintf("Pw%s", password)).(string)
 
-		idCostumer := account.AuthLogin(ctxWithValue, "adminUn", "adminPw")
-		if idCostumer != "" {
-			return idCostumer, address
+		if !okUN || !okPW {
+			if !account.CheckAccount(UN, PW) {
+				ctxWithValue := context.WithValue(ctx, fmt.Sprintf("Un%s", username), username)
+				ctxWithValue = context.WithValue(ctxWithValue, fmt.Sprintf("Pw%s", password), password)
+
+				idCostumer := account.AuthLogin(ctxWithValue, fmt.Sprintf("Un%s", username), fmt.Sprintf("Pw%s", password))
+				fmt.Println("Id custom : ", idCostumer)
+
+				if idCostumer != "" {
+					ctxWithValue = context.WithValue(ctx, "IDCOSTUMER", idCostumer)
+					ctxWithValue = context.WithValue(ctxWithValue, "ADDRESS", address)
+					return ctxWithValue
+				}
+
+			} else {
+				return nil
+			}
+
 		}
+
+		return nil
 	}
 
 }
@@ -62,10 +81,16 @@ func menu(ctx context.Context, product *product.BankProducts, ctxWithValue conte
 			utils.ClearScreen()
 			utils.ErrorMessage("Akses ditolak: waktu sesi habis, silahkan login kembali!")
 
-			idCostumer, address := LoginHandler(ctx)
+			ctxWithCancel, cancel := resetSessionTimeout()
+			defer cancel()
 
-			ctxWithValue = context.WithValue(ctx, "IDCOSTUMER", idCostumer)
-			ctxWithValue = context.WithValue(ctxWithValue, "ADDRESS", address)
+			ctx = ctxWithCancel
+
+			LoginHandler(ctxWithValue)
+			fmt.Printf("Data Context : %v\n", ctxWithValue)
+			// idCostumer, address := LoginHandler(ctx)
+			// ctxWithValue = context.WithValue(ctx, "IDCOSTUMER", idCostumer)
+			// ctxWithValue = context.WithValue(ctxWithValue, "ADDRESS", address)
 
 			continue
 		default:
@@ -106,4 +131,10 @@ func exitMainmenu() {
 	defer os.Exit(0)
 	utils.ClearScreen()
 	utils.SuccesMessage("Keluar dari Program\n")
+}
+
+func resetSessionTimeout() (context.Context, context.CancelFunc) {
+	ctx := context.Background()
+	deadline := time.Now().Add(20 * time.Second)
+	return context.WithDeadline(ctx, deadline)
 }

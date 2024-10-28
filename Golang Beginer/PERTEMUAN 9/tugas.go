@@ -41,6 +41,9 @@ func DoPayment(orderId string) {
 			orders[i].TotalHarga = calculateTotal(order.Products)
 			time.Sleep(2 * time.Second)
 			orders[i].Products = updateOrderStatus(order.Products, "paid")
+			time.Sleep(2 * time.Second)
+			orders[i].Products = updateOrderDelivered(order.Products, true)
+			DisplayChosenHistory()
 			historyOrders = append(historyOrders, HistoryOrders{Time: time.Now(), Orders: orders})
 			return
 		}
@@ -87,6 +90,16 @@ func updateOrderStatus(products []Product, newStatus string) []Product {
 	return products
 }
 
+func updateOrderDelivered(products []Product, newStatus bool) []Product {
+	for i := range products {
+		products[i].Delivered = newStatus
+	}
+
+	utils.SuccesMessage("Berhasil Mengubah delivered menjadi true")
+	fmt.Println(utils.ColorMessage("yellow", "Pesanan Selesai"))
+	return products
+}
+
 func calculateTotal(products []Product) int {
 	total := 0
 	for _, product := range products {
@@ -115,17 +128,25 @@ func calculateTotal(products []Product) int {
 }
 
 func OrdersProduct() string {
-	idOrder := uuid.New().String()
-	orders = append(orders, Orders{
-		Idorder:  idOrder,
-		Products: chosenProducts,
-	})
+	var tempIdOrder string
+	var idOrder string
 
-	if saveToFileOrder("Orders.json", orders) {
-		return idOrder
+	for {
+		idOrder = uuid.New().String()
+		if idOrder != tempIdOrder {
+			tempIdOrder = idOrder
+			orders = append(orders, Orders{
+				Idorder:  idOrder,
+				Products: chosenProducts,
+			})
+			if saveToFileOrder("Orders.json", orders) {
+				break
+			}
+		}
 	}
 
-	return ""
+	// fmt.Println(idOrder)
+	return idOrder
 }
 
 func saveToFileOrder(filename string, data []Orders) bool {
@@ -257,37 +278,46 @@ func DisplayChosenHistory() {
 	fmt.Println(utils.ColorMessage("green", fmt.Sprintf("Total Harga : %d", total)))
 	fmt.Println(strings.Repeat("-", 50))
 
-	fmt.Println(utils.ColorMessage("yellow", "Pesanan Selesai\n"))
+	// fmt.Println(utils.ColorMessage("yellow", "Pesanan Selesai\n"))
 	chosenProducts = []Product{}
 }
 
 func main() {
-	var done string
-	for {
-		utils.ClearScreen()
-		fmt.Println(utils.ColorMessage("blue", "\n\n=-------------- Memesan Menu --------------="))
-		DisplayProduct()
-		idOrder := OrdersProduct()
-		EditOrder(idOrder)
-		DoPayment(idOrder)
-		DisplayChosenHistory()
-		ViewOrders()
-		for {
-			fmt.Print(utils.ColorMessage("yellow", "\nApakah anda ingin memesan kembali? (y/t): "))
-			fmt.Scan(&done)
-			utils.ClearScreen()
-
-			done = strings.ToLower(done)
-			if len(done) != 1 || (done != "y" && done != "t") {
-				utils.ErrorMessage("Input harus 'y' atau 't' dan tidak boleh lebih dari satu karakter!")
-				continue
-			}
-
-			if done == "t" {
-				return
-			}
-
-			break
-		}
-	}
+	utils.ClearScreen()
+	fmt.Println(utils.ColorMessage("blue", "\n\n=-------------- Memesan Menu --------------="))
+	DisplayProduct()
+	idOrder := OrdersProduct()
+	EditOrder(idOrder)
+	DoPayment(idOrder)
+	ViewOrders()
 }
+
+// func main() {
+// 	var done string
+// 	for {
+// 		utils.ClearScreen()
+// 		fmt.Println(utils.ColorMessage("blue", "\n\n=-------------- Memesan Menu --------------="))
+// 		DisplayProduct()
+// 		idOrder := OrdersProduct()
+// 		EditOrder(idOrder)
+// 		DoPayment(idOrder)
+// 		ViewOrders()
+// 		for {
+// 			fmt.Print(utils.ColorMessage("yellow", "\nApakah anda ingin memesan kembali? (y/t): "))
+// 			fmt.Scan(&done)
+// 			utils.ClearScreen()
+
+// 			done = strings.ToLower(done)
+// 			if len(done) != 1 || (done != "y" && done != "t") {
+// 				utils.ErrorMessage("Input harus 'y' atau 't' dan tidak boleh lebih dari satu karakter!")
+// 				continue
+// 			}
+
+// 			if done == "t" {
+// 				return
+// 			}
+
+// 			break
+// 		}
+// 	}
+// }

@@ -112,7 +112,7 @@ INSERT INTO OrderStatus (status_id, order_id, status, updated_at) VALUES
 
 
 -- View query 
-
+ 
 -- View: Total order setiap bulan
 SELECT DATE_TRUNC('month', order_date) AS month, COUNT(order_id) AS total_orders
 FROM Orders

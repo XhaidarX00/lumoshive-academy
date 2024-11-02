@@ -10,7 +10,7 @@ import (
 	"time"
 )
 
-func main() {
+func main_() {
 	utils.ClearScreen()
 	ctx := context.Background()
 	deadline := time.Now().Add(10 * time.Second)

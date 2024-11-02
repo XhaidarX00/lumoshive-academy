@@ -123,8 +123,8 @@ func main_() {
 	// fmt.Println(increment())
 
 	// func sebagai parameter -> memasukan func lain kedalam parameter
-	// result := applyOperation(6, 1, add)
-	// fmt.Println("Result : ", result)
+	result := applyOperation(6, 1, add)
+	fmt.Println("Result : ", result)
 
 }
 
@@ -137,13 +137,13 @@ func main_() {
 // 	return total
 // }
 
-// func applyOperation(a int, b int, operation func(int, int) int) int {
-// 	return operation(a, b)
-// }
+func applyOperation(a int, b int, operation func(int, int) int) int {
+	return operation(a, b)
+}
 
-// func add(a int, b int) int {
-// 	return a + b
-// }
+func add(a int, b int) int {
+	return a + b
+}
 
 // func tanpa parameter
 // func sayHello() {

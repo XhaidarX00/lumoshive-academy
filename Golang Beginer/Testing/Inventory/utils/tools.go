@@ -1,32 +1,123 @@
 package utils
 
 import (
-	"errors"
+	"context"
+	"encoding/json"
 	"fmt"
+	"inventory/model"
+	"io"
 	"os"
 	"os/exec"
 	"reflect"
 	"runtime"
+	"strconv"
 	"strings"
+	"time"
 	"unicode"
 
 	"github.com/fatih/color"
 )
 
-type Utils struct {
-	key   interface{}
-	value interface{}
+func ChoseMenu(displayData func() int) int {
+	var input string
+	for {
+		rangeMenu := displayData()
+		fmt.Scan(&input)
+		ClearScreen()
+
+		IntInput, err := strconv.Atoi(input)
+		if err != nil || IntInput < 1 || IntInput > rangeMenu {
+			ErrorMessage("input tidak valid!")
+			continue
+		}
+
+		if IntInput == rangeMenu {
+			return 0
+		}
+
+		return IntInput
+	}
 }
+
+func ChoseMenuCrud(displayData func(page string) int, page string) int {
+	var input string
+	for {
+		rangeMenu := displayData(page)
+		fmt.Scan(&input)
+		ClearScreen()
+
+		IntInput, err := strconv.Atoi(input)
+		if err != nil || IntInput < 1 || IntInput > rangeMenu {
+			ErrorMessage("input tidak valid!")
+			continue
+		}
+
+		if IntInput == rangeMenu {
+			return 0
+		}
+
+		return IntInput
+	}
+}
+
+func ExitProgram() {
+	defer os.Exit(0)
+	ClearScreen()
+	SuccesMessage("Keluar dari Program\n")
+}
+
+func ResetSessionTimeout(duration int) (context.Context, context.CancelFunc) {
+	ctx := context.Background()
+	deadline := time.Now().Add(time.Duration(duration) * time.Second)
+	return context.WithDeadline(ctx, deadline)
+}
+
+// func applyOperation(a int, b int, operation func(int, int) int) int {
+// 	return operation(a, b)
+// }
+
+func InputIndex(display func() int) int {
+	var choice string
+	for {
+		rangeMenu := display()
+		fmt.Scan(&choice)
+		ClearScreen()
+
+		intInput, err := strconv.Atoi(choice)
+		if err != nil || intInput < 1 || intInput > rangeMenu {
+			ErrorMessage(("Input harus berupa angka yang valid dan tidak boleh lebih dari 1 angka"))
+			continue
+		}
+
+		return intInput
+	}
+}
+
+// func ErrorMessage(text string) {
+// 	red := color.New(color.FgRed).SprintFunc()
+// 	err := errors.New(text)
+// 	fmt.Printf("⚠️   %s%s\n", red("Error : "), err)
+// }
 
 func ErrorMessage(text string) {
 	red := color.New(color.FgRed).SprintFunc()
-	err := errors.New(text)
-	fmt.Printf("⚠️   %s%s\n", red("Error : "), err)
+	response := model.ResponseError{
+		StatusCode: 400,
+		Message:    text,
+	}
+	// fmt.Printf("\n⚠️  %s {StatusCode: %v, Message: %s}\n", red("Error : "), response.StatusCode, response.Message)
+	jsonData, err := json.MarshalIndent(response, "", "  ")
+	if err != nil {
+		ErrorMessage("Failed to marshal JSON: " + err.Error())
+		return
+	}
+	fmt.Printf("⚠️   %s%s\n", red("Error : "), string(jsonData))
 }
 
 func SuccesMessage(text string) {
 	green := color.New(color.FgGreen).SprintFunc()
-	fmt.Printf("✔️   %s%s\n", green("Succes : "), text)
+	yellow := color.New(color.FgHiYellow).SprintFunc()
+	fmt.Printf("\n%s\n✔️  %s%s\n%s\n", yellow("=--------------------------------="), green("Succes : "), text, yellow("=--------------------------------="))
 }
 
 func ColorMessage(color_ string, text string) string {
@@ -160,7 +251,7 @@ func DisplayData(title string, data []map[string]interface{}, keys []string) {
 			if !ok {
 				value = "N/A"
 			}
-			// Using reflect to get the type and value of the data
+
 			val := reflect.ValueOf(value)
 			switch val.Kind() {
 			case reflect.String:
@@ -180,29 +271,26 @@ func DisplayData(title string, data []map[string]interface{}, keys []string) {
 	fmt.Println(strings.Repeat("-", 50))
 }
 
-// func ConvertMapToStruct(data map[string]interface{}, outputType reflect.Type) (interface{}, error) {
-// 	if outputType.Kind() != reflect.Struct {
-// 		return nil, fmt.Errorf("outputType must be a struct type")
-// 	}
+func DisplayDataJson(result interface{}) {
+	jsonData, err := json.MarshalIndent(result, "", "  ")
+	if err != nil {
+		ErrorMessage("Failed to marshal JSON: " + err.Error())
+		return
+	}
+	SuccesMessage(string(jsonData))
+}
 
-// 	output := reflect.New(outputType).Elem()
+func ConvertJsonToStruct(data interface{}, path string) error {
+	file, err := os.Open(path)
+	if err != nil {
+		return fmt.Errorf("failed to open file: %w", err)
+	}
+	defer file.Close()
 
-// 	for key, value := range data {
-// 		fieldVal := output.FieldByName(key)
-// 		if !fieldVal.IsValid() {
-// 			continue
-// 		}
-// 		if !fieldVal.CanSet() {
-// 			continue
-// 		}
+	decoder := json.NewDecoder(file)
+	if err := decoder.Decode(data); err != nil && err != io.EOF {
+		return fmt.Errorf("failed to decode JSON: %w", err)
+	}
 
-// 		valType := reflect.TypeOf(value)
-// 		if fieldVal.Type().AssignableTo(valType) {
-// 			fieldVal.Set(reflect.ValueOf(value))
-// 		} else {
-// 			return nil, fmt.Errorf("type mismatch for field %s: expected %s but got %s", key, fieldVal.Type(), valType)
-// 		}
-// 	}
-
-// 	return output.Interface(), nil
-// }
+	return nil
+}

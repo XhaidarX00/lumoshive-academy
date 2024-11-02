@@ -3,6 +3,7 @@ package repository
 import (
 	"database/sql"
 	"log"
+	utils "main/Utils"
 	"main/model"
 	"time"
 )
@@ -107,7 +108,9 @@ func (r *CustomerRepositoryDB) ViewMonthlyOrders() (interface{}, error) {
 		}
 		MonthlyOrders = append(MonthlyOrders, MonthlyOrder)
 	}
-
+	data := utils.ConvertSliceToMap(MonthlyOrders)
+	keys := utils.GetStructKeys(MonthlyOrders[0], []string{})
+	utils.DisplayData("Data Top Driver Tiap Bulan", data, keys)
 	return MonthlyOrders, nil
 }
 
@@ -142,7 +145,9 @@ func (r *CustomerRepositoryDB) ViewMonthlyCustomerOrders() (interface{}, error) 
 		}
 		MonthlyCustomerOrders = append(MonthlyCustomerOrders, MonthlyOrder)
 	}
-
+	data := utils.ConvertSliceToMap(MonthlyCustomerOrders)
+	keys := utils.GetStructKeys(MonthlyCustomerOrders[0], []string{})
+	utils.DisplayData("Data Top Driver Tiap Bulan", data, keys)
 	return MonthlyCustomerOrders, nil
 }
 
@@ -173,7 +178,9 @@ func (r *CustomerRepositoryDB) GetMonthlyCustomerOrders() (interface{}, error) {
 		}
 		GetMonthlyCustomerOrders = append(GetMonthlyCustomerOrders, MonthlyOrder)
 	}
-
+	data := utils.ConvertSliceToMap(GetMonthlyCustomerOrders)
+	keys := utils.GetStructKeys(GetMonthlyCustomerOrders[0], []string{})
+	utils.DisplayData("Data Top Driver Tiap Bulan", data, keys)
 	return GetMonthlyCustomerOrders, nil
 }
 
@@ -204,7 +211,9 @@ func (r *CustomerRepositoryDB) ViewOrderPeakTimes() (interface{}, error) {
 		}
 		ViewOrderPeakTimes = append(ViewOrderPeakTimes, MonthlyOrder)
 	}
-
+	data := utils.ConvertSliceToMap(ViewOrderPeakTimes)
+	keys := utils.GetStructKeys(ViewOrderPeakTimes[0], []string{})
+	utils.DisplayData("Data Top Driver Tiap Bulan", data, keys)
 	return ViewOrderPeakTimes, nil
 }
 
@@ -243,7 +252,9 @@ func (r *CustomerRepositoryDB) ViewCustomersSession() (interface{}, error) {
 		}
 		ViewCustomersSession = append(ViewCustomersSession, MonthlyOrder)
 	}
-
+	data := utils.ConvertSliceToMap(ViewCustomersSession)
+	keys := utils.GetStructKeys(ViewCustomersSession[0], []string{})
+	utils.DisplayData("Data Top Driver Tiap Bulan", data, keys)
 	return ViewCustomersSession, nil
 }
 
@@ -263,7 +274,7 @@ func (r *CustomerRepositoryDB) GetMonthlyTopDrivers() (interface{}, error) {
 		Name                   string
 		Total_success_orders   int
 		Total_cancelled_orders int
-		total_orders           int
+		Total_orders           int
 	}
 
 	for rows.Next() {
@@ -273,15 +284,17 @@ func (r *CustomerRepositoryDB) GetMonthlyTopDrivers() (interface{}, error) {
 			Name                   string
 			Total_success_orders   int
 			Total_cancelled_orders int
-			total_orders           int
+			Total_orders           int
 		}{}
 
-		err := rows.Scan(&MonthlyOrder.Month, &MonthlyOrder.Driver_id, &MonthlyOrder.Name, &MonthlyOrder.Total_success_orders, &MonthlyOrder.Total_cancelled_orders, &MonthlyOrder.total_orders)
+		err := rows.Scan(&MonthlyOrder.Month, &MonthlyOrder.Driver_id, &MonthlyOrder.Name, &MonthlyOrder.Total_success_orders, &MonthlyOrder.Total_cancelled_orders, &MonthlyOrder.Total_orders)
 		if err != nil {
 			log.Fatal(err)
 		}
 		GetMonthlyTopDrivers = append(GetMonthlyTopDrivers, MonthlyOrder)
 	}
-
+	data := utils.ConvertSliceToMap(GetMonthlyTopDrivers)
+	keys := utils.GetStructKeys(GetMonthlyTopDrivers[0], []string{})
+	utils.DisplayData("Data Top Driver Tiap Bulan", data, keys)
 	return GetMonthlyTopDrivers, nil
 }

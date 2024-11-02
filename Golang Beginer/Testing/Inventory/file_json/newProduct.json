@@ -1,0 +1,7 @@
+{
+    "name": "Laptop ROG",
+    "price": 10000000.00,
+    "stock": 20,
+    "category_id": "ctg1",
+    "location_id": "loc1"
+}

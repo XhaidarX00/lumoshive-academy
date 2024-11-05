@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Forum</title>
+</head>
+<body>
+    <h1>Forum Diskusi</h1>
+    <div>
+        <h2>Pesan:</h2>
+        {{range .Messages}}
+        <p>{{.}}</p>
+        {{end}}
+    </div>
+    <form method="POST" action="/">
+        <textarea name="message"></textarea>
+        <button type="submit">Kirim</button>
+    </form>
+</body>
+</html>

@@ -1,0 +1,29 @@
+<!-- <!DOCTYPE html>
+<html>
+<head>
+    <title>Upload File</title>
+</head>
+<body>
+    <h1>{{.Title}}</h1>
+    <form enctype="multipart/form-data" action="/upload" method="post">
+        <input type="file" name="file" />
+        <input type="submit" value="Upload" />
+    </form>
+</body>
+</html> -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Download File</title>
+</head>
+<body>
+    <h2>Download File {{.Title}}</h2>
+    <p>Klik tombol di bawah untuk mengunduh file.</p>
+    
+    <a href="/download">Download File PDF</a>
+</body>
+</html>

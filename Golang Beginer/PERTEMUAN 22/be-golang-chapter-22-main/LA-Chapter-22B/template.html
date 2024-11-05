@@ -1,0 +1,73 @@
+<!-- <!DOCTYPE html>
+<html>
+<head>
+    <title>{{.Title}}</title>
+</head>
+<body>
+    <h1>Hello, {{.Name}}!</h1>
+    <p>{{.Message}}</p>
+</body>
+</html> -->
+
+
+<!-- <!DOCTYPE html>
+<html>
+<head>
+    <title>Status Umur</title>
+</head>
+<body>
+    <h1>Status Umur</h1>
+    {{if gt .Umur 17}}
+        <p>{{.Nama}} sudah cukup umur.</p>
+    {{else}}
+        <p>{{.Nama}} masih di bawah umur.</p>
+    {{end}}
+</body>
+</html> -->
+
+<!-- <!DOCTYPE html>
+<html>
+<head>
+    <title>Status Umur</title>
+</head>
+<body>
+    <h1>Status Umur</h1>
+    {{if gt .Umur 17}}
+        <p>{{.Nama}} sudah cukup umur.</p>
+    {{else}}
+        <p>{{.Nama}} masih di bawah umur.</p>
+    {{end}}
+</body>
+</html> -->
+
+<!-- <!DOCTYPE html>
+<html>
+<head>
+    <title>Daftar Buah</title>
+</head>
+<body>
+    <h1>Daftar Buah</h1>
+    <ul>
+        {{range .Buah}}
+            <li>{{.}}</li>
+        {{end}}
+    </ul>
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Data Personal</title>
+</head>
+<body>
+    <h1>Data Personal</h1>
+    <p>Nama: {{.Name}}</p>
+    <p>Umur: {{.Age}}</p>
+    
+    <!-- Menggunakan with untuk nested struct Address -->
+    {{with .Address}}
+        <p>Alamat: {{.Street}}, {{.City}}, {{.Country}}</p>
+    {{end}}
+</body>
+</html>

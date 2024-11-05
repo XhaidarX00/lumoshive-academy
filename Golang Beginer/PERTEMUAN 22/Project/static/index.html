@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Registration & Todo List App</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="navbar">
+            <button class="nav-button" onclick="showContent('registration')">Registration</button>
+            <button class="nav-button" onclick="showContent('todo-list')">Todo List</button>
+            <button class="nav-button" onclick="showContent('user-list')">List Data User</button>
+        </div>
+
+        <div id="registration" class="content">
+            <h2>Registration Form</h2>
+            <form id="regForm" onsubmit="handleRegistration(event)">
+                <div class="form-group">
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="username">Username:</label>
+                    <input type="text" id="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" required>
+                </div>
+                <button type="submit" class="submit-btn">Register</button>
+            </form>
+        </div>
+
+        <div id="todo-list" class="content hidden">
+            <h2>Todo List</h2>
+            <div class="form-group">
+                <input type="text" id="todoTitle" placeholder="Enter todo title">
+                <button onclick="addTodo()" class="submit-btn">Add Todo</button>
+            </div>
+            <div id="todoItems"></div>
+        </div>
+
+        <div id="user-list" class="content hidden">
+            <h2>User List</h2>
+            <div id="userItems"></div>
+        </div>
+
+        <div id="user-detail" class="content hidden">
+            <h2>User Detail</h2>
+            <div id="userDetailContent"></div>
+            <button class="back-btn" onclick="showContent('user-list')">Back</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

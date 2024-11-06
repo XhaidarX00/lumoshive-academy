@@ -1,3 +1,63 @@
+// package main
+
+// import (
+// 	"fmt"
+// 	"html/template"
+// 	"net/http"
+// 	"path/filepath"
+// )
+
+// // renderTemplate merender template yang diminta berdasarkan parameter `tmpl` dengan `layout.html` sebagai template utama
+// func renderTemplate(w http.ResponseWriter, tmpl string, data interface{}) {
+// 	// Gabungkan `layout.html` dengan template yang spesifik
+// 	templates, err := template.ParseFiles(
+// 		filepath.Join("./templates", "layout.html"),
+// 		filepath.Join("./templates", "navbar.html"),
+// 		filepath.Join("./templates", tmpl),
+// 	)
+// 	if err != nil {
+// 		http.Error(w, "Template tidak ditemukan atau gagal dirender", http.StatusInternalServerError)
+// 		return
+// 	}
+
+// 	// Eksekusi template dengan `layout.html` sebagai template utama
+// 	err = templates.ExecuteTemplate(w, "layout.html", data)
+// 	if err != nil {
+// 		http.Error(w, "Gagal menampilkan template", http.StatusInternalServerError)
+// 		fmt.Println("Error executing template:", err) // Memperbaiki urutan error
+// 	}
+// }
+
+// // Handler untuk halaman registrasi
+// func registrationHandler(w http.ResponseWriter, r *http.Request) {
+// 	renderTemplate(w, "registration.html", map[string]string{"Title": "Registration Page"})
+// }
+
+// // Handler untuk halaman todo
+// func todoHandler(w http.ResponseWriter, r *http.Request) {
+// 	renderTemplate(w, "todo-list.html", map[string]string{"Title": "Todo List"})
+// }
+
+// // Handler untuk halaman daftar pengguna
+// func userHandler(w http.ResponseWriter, r *http.Request) {
+// 	renderTemplate(w, "user.html", map[string]string{"Title": "User  List"})
+// }
+
+// func main() {
+// 	http.HandleFunc("/register", registrationHandler)
+// 	http.HandleFunc("/todos", todoHandler)
+// 	http.HandleFunc("/users", userHandler)
+
+// 	fs := http.FileServer(http.Dir("static"))
+// 	http.Handle("/static/", http.StripPrefix("/static/", fs))
+
+// 	// Menjalankan server di port 8080
+// 	err := http.ListenAndServe(":8080", nil)
+// 	if err != nil {
+// 		panic("Server gagal berjalan: " + err.Error())
+// 	}
+// }
+
 package main
 
 import (
@@ -35,8 +95,9 @@ func main() {
 	)
 
 	// Setup file server for static files
-	// fs := http.FileServer(http.Dir("./view"))
+	fs := http.FileServer(http.Dir("./static"))
 	// staticHandler := http.StripPrefix("/", fs)
+	serverMux.Handle("/", fs)
 
 	// Register all routes to main mux
 	// API routes
@@ -44,7 +105,7 @@ func main() {
 	serverMux.Handle("/api/", http.StripPrefix("/api/todos", protected))
 
 	// Static file server
-	// serverMux.Handle("/", middleware.CorsMiddleware(staticHandler))
+	// serverMux.Handle("/", middleware.CorsMiddleware(fs))
 
 	fmt.Println("server started on port 8080")
 	http.ListenAndServe(":8080", serverMux)

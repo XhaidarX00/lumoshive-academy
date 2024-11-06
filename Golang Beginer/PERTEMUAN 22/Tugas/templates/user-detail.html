@@ -1,0 +1,26 @@
+{{ define "content" }}
+<div class="card">
+    <div class="card-header">
+        <h2 class="card-title">User Detail</h2>
+    </div>
+    <div class="card-content">
+        <div class="form-group">
+            <label>Name</label>
+            <input type="text" value="{{ .user.Name }}" class="input" readonly>
+        </div>
+        <div class="form-group">
+            <label>Username</label>
+            <input type="text" value="{{ .user.Username }}" class="input" readonly>
+        </div>
+        <div class="form-group">
+            <label>Username</label>
+            <input type="text" value="{{ .user.Password }}" class="input" readonly>
+        </div>
+        <div class="form-group">
+            <label>Token</label>
+            <input type="text" value="{{ .user.Token }}" class="input" readonly>
+        </div>
+        <a href="/list-users" class="btn btn-outline">Back to User List</a>
+    </div>
+</div>
+{{ end }}

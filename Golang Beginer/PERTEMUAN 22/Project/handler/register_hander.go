@@ -8,7 +8,7 @@ import (
 	"net/http"
 )
 
-// curl -X POST http://localhost:8080/register -H "Content-Type: application/json" -d '{"username":"admin3", "password":"password789", "email":"admin3@example.com", "role":"admin"}'
+// curl -X POST http://localhost:8080/api/auth/register -H "Content-Type: application/json" -d '{"username":"admin3", "password":"password789", "email":"admin3@example.com", "role":"admin"}'
 func RegisterHandler(w http.ResponseWriter, r *http.Request) {
 	user := model.User{}
 	err := json.NewDecoder(r.Body).Decode(&user)
@@ -21,6 +21,8 @@ func RegisterHandler(w http.ResponseWriter, r *http.Request) {
 		json.NewEncoder(w).Encode(badResponse)
 		return
 	}
+
+	fmt.Printf("Regis Data : %v\n", user)
 
 	if len(user.Password) < 8 {
 		badResponse := model.ResponseError{

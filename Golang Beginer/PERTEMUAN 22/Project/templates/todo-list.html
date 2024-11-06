@@ -1,0 +1,26 @@
+{{ define "content" }}
+<div class="card">
+    <div class="card-header">
+        <h2 class="card-title">Todo List</h2>
+    </div>
+    <div class="card-content">
+        <form id="addTodoForm" class="flex space-x-2 mb-4">
+            <input name="title" placeholder="New todo" required class="input bg-background flex-grow">
+            <button type="submit" class="btn btn-primary">Add</button>
+        </form>
+        <ul id="todoList" class="space-y-2">
+            {{ range .Todos }}
+            <li class="todo-item">
+                <div class="flex items-center space-x-2">
+                    <input type="checkbox" id="todo-{{ .ID }}" {{ if .Done }}checked{{ end }} onchange="toggleTodoStatus('{{ .ID }}')">
+                    <label for="todo-{{ .ID }}" class="{{ if .Done }}line-through text-muted{{ end }}">{{ .Title }}</label>
+                </div>
+                <button onclick="deleteTodo('{{ .ID }}')" class="btn btn-danger btn-icon">
+                    <i data-lucide="trash-2" class="h-4 w-4"></i>
+                </button>
+            </li>
+            {{ end }}
+        </ul>
+    </div>
+</div>
+{{ end }}

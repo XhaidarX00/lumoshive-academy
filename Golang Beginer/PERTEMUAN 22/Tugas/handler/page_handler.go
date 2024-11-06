@@ -1,0 +1,63 @@
+package handler
+
+import (
+	"html/template"
+	"log"
+	"net/http"
+	"path/filepath"
+)
+
+// Template cache untuk menyimpan template yang sudah diparsing
+var templates = map[string]*template.Template{}
+
+// InitTemplates - Memuat semua template saat aplikasi dimulai
+func InitTemplates() {
+	baseTemplate := "templates/base.html"
+	contentTemplates := []string{
+		"templates/list-users.html",
+		"templates/registration.html",
+		"templates/todo-list.html",
+		"templates/user-detail.html",
+	}
+
+	for _, content := range contentTemplates {
+		name := filepath.Base(content)
+		tmpl, err := template.ParseFiles(baseTemplate, content)
+		if err != nil {
+			log.Fatalf("Error parsing templates: %v", err)
+		}
+		templates[name] = tmpl
+	}
+}
+
+// RenderTemplate - Merender template berdasarkan nama file
+func RenderTemplate(w http.ResponseWriter, tmplName string, data interface{}) {
+	tmpl, ok := templates[tmplName]
+	if !ok {
+		http.Error(w, "Template not found", http.StatusNotFound)
+		return
+	}
+
+	err := tmpl.Execute(w, data)
+	if err != nil {
+		http.Error(w, "Error rendering template", http.StatusInternalServerError)
+		log.Println(err)
+	}
+}
+
+// Handler untuk setiap halaman
+func RegistrationHandler(w http.ResponseWriter, r *http.Request) {
+	RenderTemplate(w, "registration.html", nil)
+}
+
+func ListUsersHandler(w http.ResponseWriter, r *http.Request) {
+	RenderTemplate(w, "list-users.html", nil)
+}
+
+func TodoListHandler(w http.ResponseWriter, r *http.Request) {
+	RenderTemplate(w, "todo-list.html", nil)
+}
+
+func UserDetailHandler(w http.ResponseWriter, r *http.Request) {
+	RenderTemplate(w, "user-detail.html", nil)
+}

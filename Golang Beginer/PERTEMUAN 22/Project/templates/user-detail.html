@@ -1,0 +1,18 @@
+{{ define "content" }}
+<div class="card">
+    <div class="card-header">
+        <h2 class="card-title">User Detail</h2>
+    </div>
+    <div class="card-content">
+        <div class="space-y-2">
+            <p><strong>Name:</strong> {{ .User.Name }}</p>
+            <p><strong>Username:</strong> {{ .User.Username }}</p>
+            <p><strong>Password:</strong> {{ .User.Password }}</p>
+            <p><strong>Token:</strong> {{ .User.Token }}</p>
+        </div>
+        <button onclick="showContent('list-users')" class="btn btn-outline mt-4">
+            <i data-lucide="chevron-left" class="mr-2 h-4 w-4"></i> Back to User List
+        </button>
+    </div>
+</div>
+{{ end }}

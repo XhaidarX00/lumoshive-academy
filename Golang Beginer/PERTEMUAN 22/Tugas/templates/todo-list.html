@@ -1,0 +1,41 @@
+{{ define "content" }}
+<div class="card">
+    <div class="card-header">
+        <h2 class="card-title">Todo List</h2>
+    </div>
+    <div class="card-content">
+        <form action="/add-todo" method="POST" class="todo-form">
+            <div class="input-group">
+                <input type="text" name="title" placeholder="New todo" class="input" required>
+                <button type="submit" class="btn btn-primary">Add</button>
+            </div>
+        </form>
+        <ul class="list">
+            {{ range .todos }}
+            <li class="list-item">
+                <div class="todo-info">
+                    <input type="checkbox" id="todo-{{ .Task_id }}" class="checkbox" {{ if eq .Status "completed" }}checked{{ end }} onchange="window.location.href='/change-status-todo?id={{ .Task_id }}'">
+                    <label for="todo-{{ .Task_id }}" class="todo-title">
+                        {{ .Title }} 
+                        <span class="user-status {{ if eq .Status "completed" }}completed{{ else }}progress{{ end }}">
+                            {{ if eq .Status "completed" }}Completed{{ else }}In Progress{{ end }}
+                        </span>
+                    </label>
+                </div>
+
+                <div class="todo-actions">
+                    <a href="/delete-todo?id={{ .Task_id }}" class="btn btn-icon" onclick="return confirm('Are you sure to delete this Task?')">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M3 6h18"></path>
+                            <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
+                            <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
+                        </svg>
+                    </a>
+                </div>
+            </li>
+            {{ end }}
+        </ul>
+
+    </div>
+</div>
+{{ end }}

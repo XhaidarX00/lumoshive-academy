@@ -3,6 +3,7 @@ package database
 import (
 	"database/sql"
 	"fmt"
+	"log"
 	"main/model"
 	"main/utils"
 	"net/http"
@@ -44,6 +45,8 @@ func InitDB(w http.ResponseWriter) (*sql.DB, error) {
 	return db, nil
 }
 
+var DB *sql.DB
+
 func InitDB2() (*sql.DB, error) {
 	connStr := "user=postgres dbname=webgolang sslmode=disable password=@Dardar777 host=localhost"
 	db, err := sql.Open("postgres", connStr)
@@ -55,6 +58,6 @@ func InitDB2() (*sql.DB, error) {
 		return nil, err
 	}
 
-	// log.Println("Database connection established successfully")
+	log.Println("Database connection established successfully")
 	return db, nil
 }

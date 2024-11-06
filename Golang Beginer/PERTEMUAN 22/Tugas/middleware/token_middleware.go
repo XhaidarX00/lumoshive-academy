@@ -1,4 +1,4 @@
-package middleware
+package middlewaree
 
 import (
 	"main/service"
@@ -8,7 +8,7 @@ import (
 // Middleware untuk validasi token
 func TokenMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		token := r.Header.Get("token")
+		token := r.URL.Query().Get("token")
 		if !service.ServiceF.TokenCheck(token, w) {
 			return
 		}

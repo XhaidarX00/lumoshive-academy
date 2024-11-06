@@ -1,4 +1,4 @@
-package model
+package todosModel
 
 type Task struct {
 	Task_id     int

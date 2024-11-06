@@ -12,12 +12,14 @@ var templates = map[string]*template.Template{}
 
 // InitTemplates - Memuat semua template saat aplikasi dimulai
 func InitTemplates() {
-	baseTemplate := "templates/base.html"
+	baseTemplate := "view/base.html"
 	contentTemplates := []string{
-		"templates/list-users.html",
-		"templates/registration.html",
-		"templates/todo-list.html",
-		"templates/user-detail.html",
+		"view/list-users.html",
+		"view/registration.html",
+		"view/todo-list.html",
+		"view/user-detail.html",
+		"view/error.html",
+		"view/login.html",
 	}
 
 	for _, content := range contentTemplates {
@@ -46,18 +48,6 @@ func RenderTemplate(w http.ResponseWriter, tmplName string, data interface{}) {
 }
 
 // Handler untuk setiap halaman
-func RegistrationHandler(w http.ResponseWriter, r *http.Request) {
-	RenderTemplate(w, "registration.html", nil)
-}
-
-func ListUsersHandler(w http.ResponseWriter, r *http.Request) {
-	RenderTemplate(w, "list-users.html", nil)
-}
-
-func TodoListHandler(w http.ResponseWriter, r *http.Request) {
-	RenderTemplate(w, "todo-list.html", nil)
-}
-
-func UserDetailHandler(w http.ResponseWriter, r *http.Request) {
-	RenderTemplate(w, "user-detail.html", nil)
-}
+// func RegistrationHandler(w http.ResponseWriter, r *http.Request) {
+// 	RenderTemplate(w, "registration.html", nil)
+// }

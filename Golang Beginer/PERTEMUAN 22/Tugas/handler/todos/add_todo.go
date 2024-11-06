@@ -1,10 +1,10 @@
-package handler
+package todos
 
 import (
 	"fmt"
 	"html/template"
 	"log"
-	"main/model"
+	todosModel "main/model/todos"
 	"main/service"
 	"net/http"
 )
@@ -16,14 +16,14 @@ func AddTodo(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if r.Method == "POST" {
-		var task = model.Task{
+		var task = todosModel.Task{
 			Title:       r.FormValue("title"),
 			Description: fmt.Sprintf("Deskripsi %s\n", r.FormValue("title")),
 		}
 
 		id, err := service.ServiceF.AddTodoService(&task)
 		if err != nil {
-			temp, _ := template.ParseFiles("templates/base.html", "templates/todo-list.html")
+			temp, _ := template.ParseFiles("view/base.html", "view/todo-list.html")
 
 			temp.Execute(w, nil)
 			return

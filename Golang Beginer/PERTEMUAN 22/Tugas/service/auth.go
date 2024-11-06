@@ -2,13 +2,21 @@ package service
 
 import (
 	"main/library"
-	"main/model"
+	UserModel "main/model/users"
 	"net/http"
 	"time"
 )
 
-func (s *Service) RegisterService(user *model.Users) error {
+func (s *Service) RegisterService(user *UserModel.Users) error {
 	err := s.Repo.RegisterRepo(user)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (s *Service) LoginService(user *UserModel.Users) error {
+	err := s.Repo.LoginRepo(user)
 	if err != nil {
 		return err
 	}

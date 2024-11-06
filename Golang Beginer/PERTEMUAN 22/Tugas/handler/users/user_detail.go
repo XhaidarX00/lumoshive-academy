@@ -1,15 +1,16 @@
-package handler
+package users
 
 import (
 	"html/template"
-	"main/model"
+
+	UserModel "main/model/users"
 	"main/service"
 	"net/http"
 	"strconv"
 )
 
 func UserDetail(w http.ResponseWriter, r *http.Request) {
-	var users model.Users
+	var users UserModel.Users
 	idStr := r.URL.Query().Get("id")
 	idInt, err := strconv.Atoi(idStr)
 	if err != nil {
@@ -22,7 +23,7 @@ func UserDetail(w http.ResponseWriter, r *http.Request) {
 		"user": users,
 	}
 
-	temp, err := template.ParseFiles("templates/base.html", "templates/user-detail.html")
+	temp, err := template.ParseFiles("view/base.html", "view/user-detail.html")
 	if err != nil {
 		panic(err)
 	}

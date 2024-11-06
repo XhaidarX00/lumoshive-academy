@@ -1,14 +1,14 @@
 package repository
 
 import (
-	"main/model"
+	UserModel "main/model/users"
 	"time"
 
 	"github.com/google/uuid"
 )
 
-func (r *Repository) LoginRepo(user *model.Users) error {
-	query := `SELECT user_id, name, username, password FROM users WHERE username=$1 AND password=$2`
+func (r *Repository) LoginRepo(user *UserModel.Users) error {
+	query := `SELECT id, name, username, password FROM users WHERE username=$1 AND password=$2`
 	err := r.DB.QueryRow(query, user.Username, user.Password).Scan(&user.ID, &user.Name, &user.Username, &user.Password)
 	if err != nil {
 		return err
@@ -16,7 +16,7 @@ func (r *Repository) LoginRepo(user *model.Users) error {
 	return nil
 }
 
-func (r *Repository) RegisterRepo(user *model.Users) error {
+func (r *Repository) RegisterRepo(user *UserModel.Users) error {
 	query := `INSERT INTO users (name, username, password) VALUES ($1, $2, $3) RETURNING id`
 
 	var id int

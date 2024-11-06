@@ -4,7 +4,8 @@ import (
 	"database/sql"
 	"fmt"
 	"main/database"
-	"main/model"
+	todosModel "main/model/todos"
+	UserModel "main/model/users"
 	"time"
 )
 
@@ -48,7 +49,7 @@ func (r *Repository) CleanExpiredTokensRepo() string {
 	return ""
 }
 
-func (r *Repository) GetUsersRepo(users *[]model.Users) {
+func (r *Repository) GetUsersRepo(users *[]UserModel.Users) {
 	rows, err := database.DB.Query(`SELECT id, name, active FROM users ORDER BY name`)
 	if err != nil {
 		panic(err)
@@ -57,7 +58,7 @@ func (r *Repository) GetUsersRepo(users *[]model.Users) {
 	defer rows.Close()
 
 	for rows.Next() {
-		var user model.Users
+		var user UserModel.Users
 		if err := rows.Scan(&user.ID, &user.Name, &user.Active); err != nil {
 			panic(err)
 		}
@@ -66,7 +67,7 @@ func (r *Repository) GetUsersRepo(users *[]model.Users) {
 	}
 }
 
-func (r *Repository) GetTodosRepo(tasks *[]model.Task) {
+func (r *Repository) GetTodosRepo(tasks *[]todosModel.Task) {
 	rows, err := database.DB.Query("SELECT task_id, title, status FROM tasks ORDER BY task_id")
 	if err != nil {
 		panic(err)
@@ -75,7 +76,7 @@ func (r *Repository) GetTodosRepo(tasks *[]model.Task) {
 	defer rows.Close()
 
 	for rows.Next() {
-		var task model.Task
+		var task todosModel.Task
 		if err := rows.Scan(&task.Task_id, &task.Title, &task.Status); err != nil {
 			panic(err)
 		}
@@ -84,7 +85,7 @@ func (r *Repository) GetTodosRepo(tasks *[]model.Task) {
 	}
 }
 
-func (r *Repository) GetUserDetailRepo(users *model.Users) {
+func (r *Repository) GetUserDetailRepo(users *UserModel.Users) {
 	err := database.DB.QueryRow(`SELECT u.id, u.name, u.username, u.password, u.active, t.token FROM users u JOIN tokens t ON t.user_id = u.id WHERE u.id = $1`, users.ID).Scan(
 		&users.ID, &users.Name, &users.Username, &users.Password, &users.Active, &users.Token,
 	)

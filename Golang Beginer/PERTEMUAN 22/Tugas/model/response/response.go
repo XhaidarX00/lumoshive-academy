@@ -1,4 +1,4 @@
-package model
+package responseModel
 
 type RegistrationResponse struct {
 	Success bool

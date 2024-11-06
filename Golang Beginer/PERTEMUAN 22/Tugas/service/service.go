@@ -1,7 +1,7 @@
 package service
 
 import (
-	"main/model"
+	UserModel "main/model/users"
 	"main/repository"
 )
 
@@ -16,11 +16,11 @@ func NewService() {
 	ServiceF = &Service{Repo: repo}
 }
 
-func (s *Service) GetUsersDataService(users *[]model.Users) {
+func (s *Service) GetUsersDataService(users *[]UserModel.Users) {
 	s.Repo.GetUsersRepo(users)
 }
 
-func (s *Service) GetUsersDetailService(users *model.Users) {
+func (s *Service) GetUsersDetailService(users *UserModel.Users) {
 	s.Repo.GetUserDetailRepo(users)
 }
 

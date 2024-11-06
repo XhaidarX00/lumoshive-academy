@@ -1,12 +1,12 @@
 package service
 
-import "main/model"
+import todosModel "main/model/todos"
 
-func (s *Service) AddTodoService(task *model.Task) (int, error) {
+func (s *Service) AddTodoService(task *todosModel.Task) (int, error) {
 	return s.Repo.AddTodoRepo(task)
 }
 
-func (s *Service) GetTodosService(tasks *[]model.Task) {
+func (s *Service) GetTodosService(tasks *[]todosModel.Task) {
 	s.Repo.GetTodosRepo(tasks)
 }
 

@@ -2,10 +2,10 @@ package repository
 
 import (
 	"fmt"
-	"main/model"
+	todosModel "main/model/todos"
 )
 
-func (r *Repository) CreateTaskRepo(task *model.Task) error {
+func (r *Repository) CreateTaskRepo(task *todosModel.Task) error {
 	query := `INSERT INTO tasks (user_id, title, description) VALUES ($1, $2, $3)`
 	_, err := r.DB.Exec(query, task.User_id, task.Title, task.Description)
 	if err != nil {
@@ -14,7 +14,7 @@ func (r *Repository) CreateTaskRepo(task *model.Task) error {
 	return nil
 }
 
-func (r *Repository) ReadTaskRepo(tasks *[]model.Task) error {
+func (r *Repository) ReadTaskRepo(tasks *[]todosModel.Task) error {
 	query := `SELECT task_id, title, description, status FROM tasks`
 	rows, err := r.DB.Query(query)
 	if err != nil {
@@ -23,7 +23,7 @@ func (r *Repository) ReadTaskRepo(tasks *[]model.Task) error {
 	defer rows.Close()
 
 	for rows.Next() {
-		task := model.Task{}
+		task := todosModel.Task{}
 		if err := rows.Scan(&task.Task_id, &task.User_id, &task.Title, &task.Description, &task.Status); err != nil {
 			return fmt.Errorf("error scanning row: %v", err)
 		}
@@ -37,7 +37,7 @@ func (r *Repository) ReadTaskRepo(tasks *[]model.Task) error {
 	return nil
 }
 
-func (r *Repository) readTaskStatus(task *model.Task) error {
+func (r *Repository) readTaskStatus(task *todosModel.Task) error {
 	query := `SELECT status FROM tasks WHERE task_id = $1`
 	err := r.DB.QueryRow(query, task.Task_id).Scan(&task.Status)
 	fmt.Println(task.Status)
@@ -47,7 +47,7 @@ func (r *Repository) readTaskStatus(task *model.Task) error {
 	return nil
 }
 
-func (r *Repository) UpdateTaskRepo(task *model.Task) error {
+func (r *Repository) UpdateTaskRepo(task *todosModel.Task) error {
 	ErrorMessage := r.readTaskStatus(task)
 	if ErrorMessage != nil {
 		return ErrorMessage

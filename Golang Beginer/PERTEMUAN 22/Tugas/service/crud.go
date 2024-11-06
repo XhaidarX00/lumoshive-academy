@@ -1,8 +1,8 @@
 package service
 
-import "main/model"
+import todosModel "main/model/todos"
 
-func (s *Service) CreateTaskService(task *model.Task) error {
+func (s *Service) CreateTaskService(task *todosModel.Task) error {
 	err := s.Repo.CreateTaskRepo(task)
 	if err != nil {
 		return err
@@ -10,7 +10,7 @@ func (s *Service) CreateTaskService(task *model.Task) error {
 	return nil
 }
 
-func (s *Service) ReadTaskService(task *[]model.Task) error {
+func (s *Service) ReadTaskService(task *[]todosModel.Task) error {
 	err := s.Repo.ReadTaskRepo(task)
 	if err != nil {
 		return err
@@ -18,7 +18,7 @@ func (s *Service) ReadTaskService(task *[]model.Task) error {
 	return nil
 }
 
-func (s *Service) UpdateTaskService(task *model.Task) error {
+func (s *Service) UpdateTaskService(task *todosModel.Task) error {
 	err := s.Repo.UpdateTaskRepo(task)
 	if err != nil {
 		return err

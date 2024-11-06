@@ -1,10 +1,10 @@
 package repository
 
 import (
-	"main/model"
+	todosModel "main/model/todos"
 )
 
-func (r *Repository) AddTodoRepo(task *model.Task) (int, error) {
+func (r *Repository) AddTodoRepo(task *todosModel.Task) (int, error) {
 	query := `INSERT INTO tasks (title, description) VALUES ($1, $2) RETURNING task_id`
 	var id int
 

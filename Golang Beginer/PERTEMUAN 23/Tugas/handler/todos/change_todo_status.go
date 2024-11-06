@@ -5,10 +5,12 @@ import (
 	"main/service"
 	"net/http"
 	"strconv"
+
+	"github.com/go-chi/chi"
 )
 
 func ChangeTodoStatus(w http.ResponseWriter, r *http.Request) {
-	idString := r.URL.Query().Get("id")
+	idString := chi.URLParam(r, "taskID")
 
 	id, err := strconv.Atoi(idString)
 	if err != nil {
@@ -21,5 +23,5 @@ func ChangeTodoStatus(w http.ResponseWriter, r *http.Request) {
 
 	log.Printf("Berhasil Update Status %d\n", id)
 
-	http.Redirect(w, r, "/todo-list", http.StatusSeeOther)
+	http.Redirect(w, r, "/api/todos/", http.StatusSeeOther)
 }

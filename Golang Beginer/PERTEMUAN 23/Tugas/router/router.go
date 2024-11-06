@@ -17,17 +17,18 @@ func InitRoute() {
 	r.Use(middleware.Logger)
 
 	r.Route("/", func(r chi.Router) {
-		r.Get("/register", users.RegisterHandler)
-		r.Post("/register", users.RegisterHandler)
+		r.Get("/", users.LoginHandler)
 		r.Get("/login", users.LoginHandler)
 		r.Post("/login", users.LoginHandler)
+		r.Get("/registration", users.RegisterHandler)
+		r.Post("/registration", users.RegisterHandler)
 
 		r.With(middlewaree.TokenMiddleware).Route("/api", func(r chi.Router) {
-			r.Route("/users", func(r chi.Router) {
+			r.Route("/user", func(r chi.Router) {
 				r.Get("/", users.ReadUsers)
 				r.Route("/{userID}", func(r chi.Router) {
 					r.Get("/", users.UserDetail)
-					r.Delete("/", users.DeleteUsers)
+					r.Get("/delete", users.DeleteUsers)
 				})
 			})
 
@@ -35,8 +36,8 @@ func InitRoute() {
 				r.Get("/", todos.ReadTodos)
 				r.Post("/", todos.AddTodo)
 				r.Route("/{taskID}", func(r chi.Router) {
-					r.Put("/", todos.ChangeTodoStatus)
-					r.Delete("/", todos.DeleteTodo)
+					r.Get("/update", todos.ChangeTodoStatus)
+					r.Get("/delete", todos.DeleteTodo)
 				})
 			})
 		})

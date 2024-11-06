@@ -1,8 +1,8 @@
 package users
 
 import (
-	"html/template"
 	"log"
+	"main/handler"
 	UserModel "main/model/users"
 	"main/service"
 	"net/http"
@@ -10,12 +10,7 @@ import (
 
 func RegisterHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
-		temp, err := template.ParseFiles("view/base.html", "view/registration.html")
-		if err != nil {
-			panic(err)
-		}
-
-		temp.Execute(w, nil)
+		handler.RenderTemplate(w, "registration.html", nil)
 	}
 
 	if r.Method == "POST" {
@@ -26,12 +21,10 @@ func RegisterHandler(w http.ResponseWriter, r *http.Request) {
 		}
 		err := service.ServiceF.RegisterService(&user)
 		if err != nil {
-			temp, _ := template.ParseFiles("view/base.html", "view/registration.html")
-
-			temp.Execute(w, nil)
+			handler.RenderTemplate(w, "registration.html", nil)
 		}
 
-		http.Redirect(w, r, "/login", http.StatusSeeOther)
+		http.Redirect(w, r, "/", http.StatusSeeOther)
 
 		log.Printf("Register Berhasil : %v\n", user)
 	}

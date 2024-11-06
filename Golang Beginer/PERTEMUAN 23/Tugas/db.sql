@@ -56,4 +56,4 @@ SELECT * FROM users;
 SELECT u.id, u.name, u.username, u.password, t.token, u.active 
 FROM users u
 JOIN tokens t ON t.user_id = u.id
-WHERE u.id = 1;
+WHERE u.username = 'admin1' AND u.password = 'password123';

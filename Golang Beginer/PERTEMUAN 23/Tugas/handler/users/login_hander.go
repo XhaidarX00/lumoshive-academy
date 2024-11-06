@@ -1,23 +1,16 @@
 package users
 
 import (
-	"html/template"
-	"log"
+	"main/handler"
+	"main/library"
 	UserModel "main/model/users"
 	"main/service"
 	"net/http"
 )
 
-var Token *string
-
 func LoginHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
-		temp, err := template.ParseFiles("view/base.html", "view/login.html")
-		if err != nil {
-			panic(err)
-		}
-
-		temp.Execute(w, nil)
+		handler.RenderTemplate(w, "login.html", nil)
 	}
 
 	if r.Method == "POST" {
@@ -27,15 +20,10 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 		}
 		err := service.ServiceF.LoginService(&user)
 		if err != nil {
-			temp, _ := template.ParseFiles("view/base.html", "view/login.html")
-
-			temp.Execute(w, nil)
+			handler.RenderTemplate(w, "login.html", nil)
 		}
 
-		http.Redirect(w, r, "/list-users", http.StatusSeeOther)
-
-		Token = &user.Token
-
-		log.Println(Token)
+		library.SetCookie(w, user.Token)
+		http.Redirect(w, r, "/api/user", http.StatusSeeOther)
 	}
 }

@@ -1,17 +1,18 @@
 package users
 
 import (
-	"html/template"
-
+	"main/handler"
 	UserModel "main/model/users"
 	"main/service"
 	"net/http"
 	"strconv"
+
+	"github.com/go-chi/chi"
 )
 
 func UserDetail(w http.ResponseWriter, r *http.Request) {
 	var users UserModel.Users
-	idStr := r.URL.Query().Get("id")
+	idStr := chi.URLParam(r, "userID")
 	idInt, err := strconv.Atoi(idStr)
 	if err != nil {
 		return
@@ -23,11 +24,5 @@ func UserDetail(w http.ResponseWriter, r *http.Request) {
 		"user": users,
 	}
 
-	temp, err := template.ParseFiles("view/base.html", "view/user-detail.html")
-	if err != nil {
-		panic(err)
-	}
-
-	temp.Execute(w, data)
-
+	handler.RenderTemplate(w, "user-detail.html", data)
 }

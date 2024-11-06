@@ -8,8 +8,11 @@ import (
 )
 
 func (r *Repository) LoginRepo(user *UserModel.Users) error {
-	query := `SELECT id, name, username, password FROM users WHERE username=$1 AND password=$2`
-	err := r.DB.QueryRow(query, user.Username, user.Password).Scan(&user.ID, &user.Name, &user.Username, &user.Password)
+	query := `SELECT u.id, u.name, u.username, u.password, u.active, t.token 
+	FROM users u
+	JOIN tokens t ON t.user_id = u.id
+	WHERE u.username = $1 AND u.password = $2`
+	err := r.DB.QueryRow(query, user.Username, user.Password).Scan(&user.ID, &user.Name, &user.Username, &user.Password, &user.Active, &user.Token)
 	if err != nil {
 		return err
 	}

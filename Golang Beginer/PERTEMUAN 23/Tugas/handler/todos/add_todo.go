@@ -2,8 +2,8 @@ package todos
 
 import (
 	"fmt"
-	"html/template"
 	"log"
+	"main/handler"
 	todosModel "main/model/todos"
 	"main/service"
 	"net/http"
@@ -11,7 +11,7 @@ import (
 
 func AddTodo(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
-		http.Redirect(w, r, "/todo-list", http.StatusSeeOther)
+		http.Redirect(w, r, "/api/todos", http.StatusSeeOther)
 		return
 	}
 
@@ -23,14 +23,12 @@ func AddTodo(w http.ResponseWriter, r *http.Request) {
 
 		id, err := service.ServiceF.AddTodoService(&task)
 		if err != nil {
-			temp, _ := template.ParseFiles("view/base.html", "view/todo-list.html")
-
-			temp.Execute(w, nil)
+			handler.RenderTemplate(w, "todo-list.html", nil)
 			return
 		}
 
 		log.Printf("Berhasil membuat task dengan id : %d\n", id)
 
-		http.Redirect(w, r, "/todo-list", http.StatusSeeOther)
+		http.Redirect(w, r, "/api/todos/", http.StatusSeeOther)
 	}
 }

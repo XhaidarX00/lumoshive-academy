@@ -23,15 +23,13 @@ func (s *Service) LoginService(user *UserModel.Users) error {
 	return nil
 }
 
-func (s *Service) TokenCheck(token string, w http.ResponseWriter) bool {
+func (s *Service) TokenCheck(token string) string {
 	err := s.Repo.TokenCheckRepo(token)
 	if err != "" {
-		response := library.UnauthorizedRequest(err)
-		library.JsonResponse(w, response)
-		return false
+		return err
 	}
 
-	return true
+	return ""
 }
 
 // Fungsi untuk membersihkan token yang sudah kadaluarsa
@@ -65,7 +63,7 @@ func (s *Service) RoleCheckAcc(role string, w http.ResponseWriter, r *http.Reque
 }
 
 func (s *Service) CheckToken() {
-	ticker := time.NewTicker(5 * time.Minute)
+	ticker := time.NewTicker(12 * time.Hour)
 	defer ticker.Stop()
 	for {
 		select {

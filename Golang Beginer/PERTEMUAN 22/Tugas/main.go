@@ -33,7 +33,7 @@ func main() {
 	// Setup resource routes with authentication and role middleware
 	resourceMux := http.NewServeMux()
 	// resourceMux.HandleFunc("GET /read", handler.ReadTaskHandler)
-	resourceMux.HandleFunc("POST /create", handler.CreateTaskHandler)
+	// resourceMux.HandleFunc("POST /create", handler.CreateTaskHandler)
 	// resourceMux.HandleFunc("PUT /update", handler.UpdateTaskHandler)
 	// resourceMux.HandleFunc("DELETE /delete", handler.DeleteTaskHandler)
 	// resourceMux.HandleFunc("PUT /todos/{id}/status", handler.UpdateTaskStatusHandler)

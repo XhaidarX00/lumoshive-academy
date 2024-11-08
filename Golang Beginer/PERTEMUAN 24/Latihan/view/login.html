@@ -1,0 +1,14 @@
+{{ define "content" }}
+<h2>Login Admin</h2>
+<div class="card">
+    <form action="/login" method="POST">
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" class="input" required>
+
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" class="input" required>
+
+        <button type="submit">Login</button>
+    </form>
+</div>
+{{ end }}

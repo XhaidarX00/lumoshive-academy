@@ -1,0 +1,40 @@
+{{ define "content" }}
+<div class="card">
+    <h1>DAFTAR BUKU</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Kode Buku</th>
+                <th>Nama Buku</th>
+                <th>Jenis Buku</th>
+                <th>Pengarang</th>
+                <th>Harga</th>
+                <th>Diskon</th>
+                <th colspan="2">Aksi</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{range .Books}}
+            <tr>
+                <td>{{.ID}}</td>
+                <td>{{.Name}}</td>
+                <td>{{.Type}}</td>
+                <td>{{.Author}}</td>
+                <td>{{.Price}}</td>
+                <td>{{.Discount}}</td>
+                <td>
+                    <form action="/api/book/{{.ID}}/edit">
+                        <button type="submit" class="btn">Edit</button>
+                    </form>
+                </td>
+                <td>
+                    <form action="/api/book/{{.ID}}/delete">
+                        <button type="submit" class="btn">Hapus</button>
+                    </form>
+                </td>
+            </tr>
+            {{end}}
+        </tbody>
+    </table>
+</div>
+{{ end }}

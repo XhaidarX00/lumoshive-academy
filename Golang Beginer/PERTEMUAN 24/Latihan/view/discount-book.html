@@ -1,0 +1,14 @@
+{{ define "content" }}
+<h2>Pengaturan Diskon Buku</h2>
+<div class="card">
+    <form action="/api/book-list">
+        <label for="bookCode">Kode Buku:</label>
+        <input type="text" id="bookCode" name="bookCode" required>
+
+        <label for="discount">Diskon (%):</label>
+        <input type="number" id="discount" name="discount" required>
+
+        <button type="submit">Terapkan Diskon</button>
+    </form>
+</div>
+{{ end }}

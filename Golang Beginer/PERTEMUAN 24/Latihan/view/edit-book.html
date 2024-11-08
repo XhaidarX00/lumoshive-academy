@@ -1,0 +1,29 @@
+{{ define "content" }}
+<h2>Edit Buku</h2>
+<div class="card">
+    <form action="/api/book/{{.ID}}/edit" method="POST">
+        <label for="bookName">Nama Buku:</label>
+        <input type="text" id="bookName" name="bookName" value="Nama Buku Lama" class="input" required>
+
+        <label for="bookType">Jenis Buku:</label>
+        <input type="text" id="bookType" name="bookType" value="Jenis Buku Lama" class="input" required>
+
+        <label for="author">Pengarang:</label>
+        <input type="text" id="author" name="author" value="Nama Pengarang" class="input" required>
+
+        <label for="price">Harga:</label>
+        <input type="number" id="price" name="price" value="100000" class="input" required>
+
+        <label for="discount">Diskon (%):</label>
+        <input type="number" id="discount" name="discount" value="10" class="input">
+
+        <label for="cover">Foto Cover Buku:</label>
+        <input type="file" id="cover" name="cover" accept="image/*" class="input">
+
+        <label for="file">File Buku (PDF):</label>
+        <input type="file" id="file" name="file" accept="application/pdf" class="input">
+
+        <button type="submit">Simpan Perubahan</button>
+    </form>
+</div>
+{{ end }}

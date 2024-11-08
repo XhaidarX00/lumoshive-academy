@@ -15,9 +15,9 @@ func main() {
 	service.NewService()
 
 	// check token expired
-	go service.ServiceF.CheckToken()
+	// go service.ServiceF.CheckToken()
 
-	// Inisialisasi template saat server dimulai
+	// Inisialisasi template html
 	handler.InitTemplates()
 
 	// Inisialisasi Routes

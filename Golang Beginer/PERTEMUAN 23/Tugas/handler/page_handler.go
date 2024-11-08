@@ -51,3 +51,5 @@ func RenderTemplate(w http.ResponseWriter, tmplName string, data interface{}) {
 // func RegistrationHandler(w http.ResponseWriter, r *http.Request) {
 // 	RenderTemplate(w, "registration.html", nil)
 // }
+
+// var templates = template.Must(template.ParseGlob("view/*.html"))

@@ -1,0 +1,27 @@
+{{ define "content" }}
+<h2>Data Penjualan Buku</h2>
+<div class="card">
+    <table>
+        <thead>
+            <tr>
+                <th>Nama Customer</th>
+                <th>Nomor Order</th>
+                <th>Status Order</th>
+                <th>Detail Order</th>
+                <th>Tanggal Order</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{range .Orders}}
+            <tr>
+                <td>{{.Name_customer}}</td>
+                <td>{{.ID}}</td>
+                <td>{{.Status}}</td>
+                <td><a href="/api/order/{{.ID}}/detail" class="btn">Lihat Detail</a></td>
+                <td>2024-01-15</td>
+            </tr>
+            {{end}}
+        </tbody>
+    </table>
+</div>
+{{ end }}

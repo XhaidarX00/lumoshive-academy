@@ -1,0 +1,31 @@
+{{ define "content" }}
+<h2>Tambah Buku Baru</h2>
+<div class="card">
+    <form action="/api/add-book" method="POST">
+        <label for="bookName">ID Buku:</label>
+        <input type="text" id="bookID" name="bookID" class="input" required>
+        <label for="bookName">Nama Buku:</label>
+        <input type="text" id="bookName" name="bookName" class="input" required>
+
+        <label for="bookType">Jenis Buku:</label>
+        <input type="text" id="bookType" name="bookType" class="input" required>
+
+        <label for="author">Pengarang:</label>
+        <input type="text" id="author" name="author" class="input" required>
+
+        <label for="price">Harga:</label>
+        <input type="number" id="price" name="price" class="input" required>
+
+        <label for="discount">Diskon (%):</label>
+        <input type="number" id="discount" name="discount" class="input">
+
+        <label for="cover">Foto Cover Buku:</label>
+        <input type="file" id="cover" name="cover" accept="image/*" class="input">
+
+        <label for="file">File Buku (PDF):</label>
+        <input type="file" id="file" name="file" accept="application/pdf" class="input">
+
+        <button type="submit">Simpan Buku</button>
+    </form>
+</div>
+{{ end }}

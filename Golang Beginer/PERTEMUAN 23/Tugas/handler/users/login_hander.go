@@ -24,6 +24,8 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 		}
 
 		library.SetCookie(w, user.Token)
+		
+		
 		http.Redirect(w, r, "/api/user", http.StatusSeeOther)
 	}
 }

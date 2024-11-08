@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ .Title }} - Book Store CMS</title>
+    <style>
+         :root {
+            --primary-color: black;
+            --secondary-color: #031312;
+            --background-color: #f0f4f8;
+            --text-color: #1c2541;
+            --border-color: #d9e2ec;
+            --error-color: #e63946;
+            /* Added for error page */
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--background-color);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            background-color: var(--primary-color);
+            color: #ffffff;
+            padding: 1rem 0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        header h1 {
+            margin-bottom: -2.9rem;
+        }
+        
+        nav {
+            display: flex;
+            justify-content: right;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        nav a {
+            color: #ffffff;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+        }
+        
+        nav a:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        main {
+            flex: 1;
+            padding: 2rem 0;
+        }
+        
+        h1,
+        h2,
+        h3 {
+            margin-bottom: 1rem;
+        }
+        
+        .card {
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .card h1 {
+            text-align: center;
+        }
+        
+        form {
+            display: grid;
+            gap: 1rem;
+        }
+        
+        label {
+            font-weight: bold;
+        }
+        
+        input[type="text"],
+        input[type="number"],
+        input[type="password"],
+        textarea {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        
+        button,
+        .btn {
+            background-color: var(--secondary-color);
+            color: #ffffff;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s ease;
+            text-decoration: none;
+        }
+        
+        button:hover,
+        .btn:hover {
+            background-color: #4a9ea0;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+        
+        th,
+        td {
+            padding: 0.65rem;
+            text-align: center;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        th {
+            background-color: var(--primary-color);
+            color: #ffffff;
+        }
+        
+        footer {
+            background-color: var(--primary-color);
+            color: #ffffff;
+            padding: 1rem;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+        }
+        /* Error page styles */
+        
+        .error-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 60vh;
+            text-align: center;
+        }
+        
+        .error-container h1 {
+            color: var(--error-color);
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .error-container p {
+            margin-bottom: 1.5rem;
+        }
+        
+        .btn-error {
+            display: inline-block;
+            background-color: var(--secondary-color);
+            color: #ffffff;
+            text-decoration: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 4px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+        
+        .btn-error:hover {
+            background-color: #4a9ea0;
+        }
+        
+        .order-summary,
+        .customer-info,
+        .order-items {
+            margin-bottom: 2rem;
+        }
+        
+        .order-summary h3,
+        .customer-info h3,
+        .order-items h3 {
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .status-completed {
+            background-color: #4caf50;
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.875rem;
+        }
+        
+        .order-items table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .order-items th,
+        .order-items td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .order-items th {
+            background-color: var(--background-color);
+            font-weight: bold;
+        }
+        
+        .order-items tfoot td {
+            border-top: 2px solid var(--border-color);
+            font-weight: bold;
+        }
+        
+        .order-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        
+        @media (max-width: 768px) {
+            nav {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            nav a {
+                margin-bottom: 0.5rem;
+            }
+            .order-actions {
+                flex-direction: column;
+            }
+            .order-actions .btn {
+                width: 100%;
+                text-align: center;
+            }
+            .footer-content {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <h1>BOOK STORE CMS</h1>
+            <nav>
+                <a href="/api/dashboard">Dashboard</a>
+                <a href="/api/add-book">Tambah Buku</a>
+                <a href="/api/book-list">Daftar Buku</a>
+                <a href="/api/order">Data Penjualan</a>
+                <a href="/api/book/discount">Set Diskon</a>
+                <a href="/api/user/logout">Logout</a>
+            </nav>
+        </div>
+    </header>
+    <main>
+        <div class="container">
+            {{ template "content" . }}
+        </div>
+    </main>
+    {{ template "footer" . }}
+</body>
+
+</html>

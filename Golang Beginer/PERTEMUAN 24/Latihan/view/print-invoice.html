@@ -1,0 +1,85 @@
+{{ define "content" }}
+<div class="invoice-container">
+    <div class="invoice-header">
+        <h2>Invoice</h2>
+        <div class="invoice-logo">
+            <img src="/path/to/logo.png" alt="Book Store CMS Logo">
+        </div>
+    </div>
+    <div class="invoice-info">
+        <div class="company-info">
+            <h3>Book Store CMS</h3>
+            <p>Jl. Buku Indah No. 123</p>
+            <p>Jakarta, Indonesia 12345</p>
+            <p>Telp: (021) 123-4567</p>
+            <p>Email: info@bookstorecms.com</p>
+        </div>
+        <div class="customer-info">
+            <h3>Ditagihkan kepada:</h3>
+            <p><strong>John Doe</strong></p>
+            <p>Jl. Sudirman No. 456</p>
+            <p>Jakarta Pusat, DKI Jakarta 10220</p>
+            <p>Email: john.doe@example.com</p>
+            <p>Telp: +62 812-3456-7890</p>
+        </div>
+        <div class="invoice-details">
+            <p><strong>Nomor Invoice:</strong> INV-123456</p>
+            <p><strong>Tanggal Invoice:</strong> 15 Januari 2024</p>
+            <p><strong>Jatuh Tempo:</strong> 29 Januari 2024</p>
+            <p><strong>Metode Pembayaran:</strong> Transfer Bank</p>
+        </div>
+    </div>
+    <div class="invoice-items">
+        <table>
+            <thead>
+                <tr>
+                    <th>Deskripsi</th>
+                    <th>Jumlah</th>
+                    <th>Harga Satuan</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Belajar HTML & CSS</td>
+                    <td>2</td>
+                    <td>Rp150.000</td>
+                    <td>Rp300.000</td>
+                </tr>
+                <tr>
+                    <td>JavaScript untuk Pemula</td>
+                    <td>1</td>
+                    <td>Rp200.000</td>
+                    <td>Rp200.000</td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="3"><strong>Subtotal</strong></td>
+                    <td>Rp500.000</td>
+                </tr>
+                <tr>
+                    <td colspan="3"><strong>PPN (10%)</strong></td>
+                    <td>Rp50.000</td>
+                </tr>
+                <tr>
+                    <td colspan="3"><strong>Total</strong></td>
+                    <td><strong>Rp550.000</strong></td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+    <div class="invoice-notes">
+        <h3>Catatan:</h3>
+        <p>Terima kasih atas pembelian Anda. Mohon lakukan pembayaran sesuai dengan tanggal jatuh tempo yang tertera.</p>
+        <p>Untuk pertanyaan mengenai invoice ini, silakan hubungi kami di info@bookstorecms.com atau (021) 123-4567.</p>
+    </div>
+    <div class="invoice-footer">
+        <p>Invoice ini dibuat secara elektronik dan sah tanpa tanda tangan.</p>
+    </div>
+</div>
+<div class="no-print">
+    <button onclick="window.print()" class="btn">Cetak Invoice</button>
+    <a href="/api/dashboard" class="btn">Kembali ke Detail Pesanan</a>
+</div>
+{{ end }}

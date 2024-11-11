@@ -4,16 +4,41 @@ import (
 	"database/sql"
 	"fmt"
 	"latihan/database"
+	"latihan/model"
+	"latihan/model/books"
+	"latihan/model/customers"
+	"latihan/model/orders"
+	"latihan/model/payment"
 	"time"
 )
+
+type RepositoryI interface {
+	AddBookDataRepo(book books.Book) error
+	CleanExpiredTokensRepo() string
+	Create(payment *payment.Payment) error
+	Delete(id int) error
+	DeleteBookRepo(id string) error
+	EditBookDataRepo(book books.Book) error
+	GenerateTkn(userID int) (string, error)
+	GetAll() ([]payment.Payment, error)
+	GetBookDataRepo(data *[]books.Book) error
+	GetByID(id int) (*payment.Payment, error)
+	GetCustomerByIDRepo(id int) (string, error)
+	GetDhasboardDataRepo(data *model.GetDhasboardData) error
+	GetOrderDataRepo(data *[]orders.Order) error
+	GetRoleRepo(token string) (string, error)
+	LoginRepo(user *customers.Customer) error
+	RegisterRepo(user *customers.Customer) error
+	TokenCheckRepo(token string) string
+	Update(payment *payment.Payment) error
+}
 
 type Repository struct {
 	DB *sql.DB
 }
 
-func NewRepository() Repository {
-	db := database.DB
-	return Repository{DB: db}
+func NewRepository(db *sql.DB) RepositoryI {
+	return &Repository{DB: db}
 }
 
 func (r *Repository) TokenCheckRepo(token string) string {

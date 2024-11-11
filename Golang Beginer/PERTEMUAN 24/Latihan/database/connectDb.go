@@ -9,13 +9,16 @@ import (
 
 var DB *sql.DB
 
-func ConnectDB() {
+func ConnectDB() *sql.DB {
 	connStr := "user=postgres dbname=bookstore sslmode=disable password=@Dardar777 host=localhost"
 	db, err := sql.Open("postgres", connStr)
 	if err != nil {
-		panic(err)
+		// panic(err)
+		return nil
 	}
 
 	log.Println("Database connection established successfully")
 	DB = db
+
+	return db
 }

@@ -7,13 +7,18 @@ import (
 var ServiceF *Service
 
 type Service struct {
-	Repo repository.Repository
+	Repo repository.RepositoryI
 }
 
-func NewService() {
-	repo := repository.NewRepository()
-	ServiceF = &Service{Repo: repo}
+func NewService(repo repository.RepositoryI) *Service {
+	return &Service{Repo: repo}
 }
+
+// func NewService(repo repository.RepositoryI) *Service {
+// repo := repository.NewRepository()
+// ServiceF = &Service{Repo: repo}
+// return &Service{Repo: repo}
+// }
 
 // func (s *Service) GetUsersDataService(users *[]customers.Customer) {
 // 	s.Repo.GetUsersRepo(users)

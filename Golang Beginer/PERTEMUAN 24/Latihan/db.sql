@@ -266,3 +266,20 @@ FROM customers u
 JOIN orders o ON o.customer_id = u.id 
 WHERE o.customer_id = 1
 LIMIT;
+
+
+CREATE TABLE payments (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    photo VARCHAR(255),
+    is_active BOOLEAN DEFAULT true,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    deleted_at TIMESTAMP
+);
+
+
+INSERT INTO payments (name, photo, is_active) VALUES 
+('Credit Card', 'https://example.com/credit-card.png', true),
+('Ewallet', 'https://example.com/paypal.png', true),
+('Bank Transfer', 'https://example.com/bank-transfer.png', false);

@@ -1,23 +1,22 @@
 package main
 
 import (
-	handler "latihan/controller"
-	"latihan/database"
+	payments "latihan/controller/payment"
 	"latihan/router"
-	"latihan/service"
 )
 
 func main() {
 	// init db
-	database.ConnectDB()
+	// database.ConnectDB()
 
 	// init service
-	service.NewService()
+	// service.NewService()
 
 	// init template
-	handler.InitTemplates()
+	// controller.InitTemplates()
+
+	payments.Svc = InitializeService()
 
 	// init routes
 	router.InitRoute()
-
 }

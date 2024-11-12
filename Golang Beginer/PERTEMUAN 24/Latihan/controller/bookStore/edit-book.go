@@ -1,39 +1,38 @@
 package bookstore
 
 import (
-	"fmt"
-	"latihan/controller"
+	pagehandler "latihan/controller/pageHandler"
 	"latihan/model/books"
-	"latihan/service"
 	"net/http"
 	"strconv"
 
-	"github.com/go-chi/chi"
+	"github.com/go-chi/chi/v5"
+	"go.uber.org/zap"
 )
 
-func EditBookHandler(w http.ResponseWriter, r *http.Request) {
+func (b *Books) EditBookHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
 		idString := chi.URLParam(r, "bookID")
-		fmt.Println(idString)
 		data := map[string]string{
 			"ID": idString,
 		}
-		controller.RenderTemplate(w, "edit-book.html", data)
+		pagehandler.RenderTemplate(w, "edit-book.html", data)
 		return
 	}
 
 	if r.Method == "POST" {
 		idString := chi.URLParam(r, "bookID")
-		fmt.Println(idString)
 		price, err := strconv.Atoi(r.FormValue("price"))
 		if err != nil {
-			controller.ErrorPage(w, err.Error())
+			b.logger.Error("Error editbookshandler", zap.Error(err))
+			pagehandler.ErrorPage(w, err.Error())
 			return
 		}
 
 		diskon, err := strconv.ParseFloat(r.FormValue("discount"), 64)
 		if err != nil {
-			controller.ErrorPage(w, err.Error())
+			b.logger.Error("Error editbookshandler", zap.Error(err))
+			pagehandler.ErrorPage(w, err.Error())
 			return
 		}
 
@@ -46,9 +45,10 @@ func EditBookHandler(w http.ResponseWriter, r *http.Request) {
 			Discount: diskon,
 		}
 
-		err = service.ServiceF.EditBookDataService(data)
+		err = b.Service.EditBookDataService(data)
 		if err != nil {
-			controller.ErrorPage(w, err.Error())
+			b.logger.Error("Error editbookshandler", zap.Error(err))
+			pagehandler.ErrorPage(w, err.Error())
 			return
 		}
 

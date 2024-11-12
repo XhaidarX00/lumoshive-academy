@@ -1,16 +1,30 @@
 package usershandler
 
 import (
-	"latihan/controller"
+	pagehandler "latihan/controller/pageHandler"
 	"latihan/library"
 	"latihan/model/customers"
 	"latihan/service"
 	"net/http"
+
+	"go.uber.org/zap"
 )
 
-func LoginHandler(w http.ResponseWriter, r *http.Request) {
+type Auth struct {
+	Service *service.Service
+	logger  *zap.Logger
+}
+
+func NewUserHandelr(serv *service.Service, log *zap.Logger) *Auth {
+	return &Auth{
+		Service: serv,
+		logger:  log,
+	}
+}
+
+func (a *Auth) LoginHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
-		controller.RenderTemplate(w, "login.html", nil)
+		pagehandler.RenderTemplate(w, "login.html", nil)
 		return
 	}
 
@@ -19,9 +33,10 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 			Username: r.FormValue("username"),
 			Password: r.FormValue("password"),
 		}
-		err := service.ServiceF.LoginService(&customer)
+		err := a.Service.LoginService(&customer)
 		if err != nil {
-			controller.ErrorPage(w, err.Error())
+			a.logger.Error("Error LoginHandler", zap.Error(err))
+			pagehandler.ErrorPage(w, err.Error())
 			return
 		}
 

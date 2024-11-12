@@ -1,22 +1,27 @@
 package main
 
 import (
-	payments "latihan/controller/payment"
+	pagehandler "latihan/controller/pageHandler"
 	"latihan/router"
 )
 
 func main() {
-	// init db
-	// database.ConnectDB()
-
-	// init service
-	// service.NewService()
 
 	// init template
-	// controller.InitTemplates()
+	pagehandler.InitTemplates()
 
-	payments.Svc = InitializeService()
+	// init wire
+	controllerHandler, db, mid, logger := InitializeService()
+	if db == nil {
+		return
+	}
+
+	// db close
+	defer db.Close()
+
+	// zap logger close
+	defer logger.Sync()
 
 	// init routes
-	router.InitRoute()
+	router.InitRoute(controllerHandler, mid)
 }

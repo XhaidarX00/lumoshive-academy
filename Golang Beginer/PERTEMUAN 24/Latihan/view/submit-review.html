@@ -1,0 +1,58 @@
+{{ define "content" }}
+<h2>Tulis Ulasan</h2>
+<div class="card">
+    <form id="review-form">
+        <div class="form-section">
+            <h3>Informasi Buku</h3>
+            <div class="form-group">
+                <label for="book-title">Judul Buku</label>
+                <input type="text" id="book-title" name="book-title" required>
+            </div>
+            <div class="form-group">
+                <label for="author">Penulis</label>
+                <input type="text" id="author" name="author" required>
+            </div>
+        </div>
+
+        <div class="form-section">
+            <h3>Ulasan Anda</h3>
+            <div class="form-group">
+                <label for="rating">Rating</label>
+                <select id="rating" name="rating" required>
+                    <option value="">Pilih rating</option>
+                    <option value="5">5 - Sangat Bagus</option>
+                    <option value="4">4 - Bagus</option>
+                    <option value="3">3 - Cukup</option>
+                    <option value="2">2 - Kurang</option>
+                    <option value="1">1 - Sangat Kurang</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="review-title">Judul Ulasan</label>
+                <input type="text" id="review-title" name="review-title" required>
+            </div>
+            <div class="form-group">
+                <label for="review-content">Isi Ulasan</label>
+                <textarea id="review-content" name="review-content" rows="5" required></textarea>
+            </div>
+        </div>
+
+        <div class="form-section">
+            <h3>Informasi Reviewer</h3>
+            <div class="form-group">
+                <label for="reviewer-name">Nama</label>
+                <input type="text" id="reviewer-name" name="reviewer-name" required>
+            </div>
+            <div class="form-group">
+                <label for="reviewer-email">Email</label>
+                <input type="email" id="reviewer-email" name="reviewer-email" required>
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn">Kirim Ulasan</button>
+            <a href="book-list.html" class="btn btn-secondary">Kembali ke Daftar Buku</a>
+        </div>
+    </form>
+</div>
+{{ end }}

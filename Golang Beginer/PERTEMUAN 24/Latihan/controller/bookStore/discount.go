@@ -1,10 +1,10 @@
 package bookstore
 
 import (
-	"latihan/controller"
+	pagehandler "latihan/controller/pageHandler"
 	"net/http"
 )
 
-func DiscountBookHandler(w http.ResponseWriter, r *http.Request) {
-	controller.RenderTemplate(w, "discount-book.html", nil)
+func (b *Books) DiscountBookHandler(w http.ResponseWriter, r *http.Request) {
+	pagehandler.RenderTemplate(w, "discount-book.html", nil)
 }

@@ -1,4 +1,4 @@
-package controller
+package pagehandler
 
 import (
 	"html/template"

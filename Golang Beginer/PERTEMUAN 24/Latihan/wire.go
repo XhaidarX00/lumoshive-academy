@@ -4,14 +4,26 @@
 package main
 
 import (
+	"database/sql"
+	"latihan/controller"
 	"latihan/database"
+	"latihan/library"
+	middlewaree "latihan/middleware"
 	"latihan/repository"
 	"latihan/service"
 
 	"github.com/google/wire"
 )
 
-func InitializeService() *service.Service {
-	wire.Build(database.ConnectDB, service.NewService, repository.NewRepository)
-	return nil
+func InitializeService() (*controller.Controller, *sql.DB, error) {
+	wire.Build(
+		database.ConnectDB,
+		library.InitLog,
+		middlewaree.NewMiddleware,
+		service.NewService,
+		repository.NewRepository,
+		controller.NewController,
+	)
+
+	return &controller.Controller{}, &sql.DB{}, error
 }

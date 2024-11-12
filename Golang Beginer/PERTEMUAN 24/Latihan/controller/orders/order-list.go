@@ -1,18 +1,32 @@
 package orders
 
 import (
-	"fmt"
-	"latihan/controller"
+	pagehandler "latihan/controller/pageHandler"
 	"latihan/model/orders"
 	"latihan/service"
 	"net/http"
+
+	"go.uber.org/zap"
 )
 
-func OrderListHandler(w http.ResponseWriter, r *http.Request) {
+type Orders struct {
+	Service *service.Service
+	logger  *zap.Logger
+}
+
+func NewOrdersHandelr(serv *service.Service, log *zap.Logger) *Orders {
+	return &Orders{
+		Service: serv,
+		logger:  log,
+	}
+}
+
+func (o *Orders) OrderListHandler(w http.ResponseWriter, r *http.Request) {
 	var data []orders.Order
-	err := service.ServiceF.GetOrderDataService(&data)
+	err := o.Service.GetOrderDataService(&data)
 	if err != nil {
-		controller.ErrorPage(w, err.Error())
+		o.logger.Error("Error ", zap.Error(err))
+		pagehandler.ErrorPage(w, err.Error())
 		return
 	}
 
@@ -20,6 +34,5 @@ func OrderListHandler(w http.ResponseWriter, r *http.Request) {
 		"Orders": data,
 	}
 
-	fmt.Println("%v\n", data)
-	controller.RenderTemplate(w, "order-list.html", result)
+	pagehandler.RenderTemplate(w, "order-list.html", result)
 }

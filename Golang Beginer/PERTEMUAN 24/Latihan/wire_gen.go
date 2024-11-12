@@ -7,16 +7,35 @@
 package main
 
 import (
+	"database/sql"
+	"latihan/controller"
 	"latihan/database"
+	"latihan/library"
+	middlewaree "latihan/middleware"
 	"latihan/repository"
 	"latihan/service"
+
+	"go.uber.org/zap"
 )
 
 // Injectors from wire.go:
 
-func InitializeService() *service.Service {
-	db := database.ConnectDB()
-	repositoryI := repository.NewRepository(db)
-	serviceService := service.NewService(repositoryI)
-	return serviceService
+func InitializeService() (*controller.Controller, *sql.DB, *middlewaree.Middlewaree, *zap.Logger) {
+	log := library.InitLog()
+	db, err := database.ConnectDB()
+	if err != nil {
+		log.Error("Databaes Error : ", zap.Error(err))
+		return nil, nil, nil, nil
+	}
+	
+	repository := repository.NewRepository(db, log)
+	serviceService := service.NewService(repository, log)
+	Controller := controller.NewController(serviceService, log)
+	if Controller == nil{
+		return nil, nil, nil, nil
+	}
+	
+	mid := middlewaree.NewMiddleware(log, serviceService)
+	
+	return Controller, db, mid, log
 }

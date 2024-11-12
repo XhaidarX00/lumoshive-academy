@@ -7,7 +7,7 @@ import (
 )
 
 // Middleware untuk validasi token
-func RoleMiddleware(next http.Handler) http.Handler {
+func (m *Middlewaree) RoleMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		token := r.Header.Get("token")
 		role, err := service.ServiceF.GetRoleService(token)

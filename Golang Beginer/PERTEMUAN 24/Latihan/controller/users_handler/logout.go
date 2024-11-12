@@ -1,10 +1,10 @@
 package usershandler
 
 import (
-	"latihan/controller"
+	pagehandler "latihan/controller/pageHandler"
 	"net/http"
 )
 
-func LogoutHandler(w http.ResponseWriter, r *http.Request) {
-	controller.RenderTemplate(w, "logout.html", nil)
+func (a *Auth) LogoutHandler(w http.ResponseWriter, r *http.Request) {
+	pagehandler.RenderTemplate(w, "logout.html", nil)
 }

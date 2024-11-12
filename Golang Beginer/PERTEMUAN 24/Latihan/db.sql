@@ -259,7 +259,7 @@ INSERT INTO reviews (id, order_id, book_id, customer_id, rating, review_text) VA
 
 count(idproduck) around
 
-SELECT * FROM books;
+SELECT * FROM customers;
 
 SELECT u.id, u.name, u.phone_number 
 FROM customers u
@@ -283,3 +283,19 @@ INSERT INTO payments (name, photo, is_active) VALUES
 ('Credit Card', 'https://example.com/credit-card.png', true),
 ('Ewallet', 'https://example.com/paypal.png', true),
 ('Bank Transfer', 'https://example.com/bank-transfer.png', false);
+
+
+SELECT * FROM orders;
+
+SELECT 
+	id, 
+	customer_id, 
+	payment_methode, 
+	total_amount, 
+	discount, 
+	final_amount, 
+	order_date, 
+	status 
+	FROM orders 
+    WHERE id = 'O001'
+    ORDER BY id;

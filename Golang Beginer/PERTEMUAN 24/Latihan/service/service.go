@@ -2,16 +2,22 @@ package service
 
 import (
 	"latihan/repository"
+
+	"go.uber.org/zap"
 )
 
 var ServiceF *Service
 
 type Service struct {
-	Repo repository.RepositoryI
+	Repo   *repository.Repository
+	Logger *zap.Logger
 }
 
-func NewService(repo repository.RepositoryI) *Service {
-	return &Service{Repo: repo}
+func NewService(repo *repository.Repository, logger *zap.Logger) *Service {
+	return &Service{
+		Repo:   repo,
+		Logger: logger,
+	}
 }
 
 // func NewService(repo repository.RepositoryI) *Service {

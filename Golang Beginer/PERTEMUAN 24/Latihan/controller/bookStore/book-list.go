@@ -1,22 +1,24 @@
 package bookstore
 
 import (
-	"latihan/controller"
+	pagehandler "latihan/controller/pageHandler"
 	"latihan/model/books"
-	"latihan/service"
 	"net/http"
+
+	"go.uber.org/zap"
 )
 
-func BookListHandler(w http.ResponseWriter, r *http.Request) {
+func (b *Books) BookListHandler(w http.ResponseWriter, r *http.Request) {
 	var data []books.Book
-	err := service.ServiceF.GetBookDataService(&data)
+	err := b.Service.GetBookDataService(&data)
 	if err != nil {
-		controller.ErrorPage(w, err.Error())
+		b.logger.Error("Error bookslisthandler", zap.Error(err))
+		pagehandler.ErrorPage(w, err.Error())
 		return
 	}
 
 	result := map[string]interface{}{
 		"Books": data,
 	}
-	controller.RenderTemplate(w, "book-list.html", result)
+	pagehandler.RenderTemplate(w, "book-list.html", result)
 }

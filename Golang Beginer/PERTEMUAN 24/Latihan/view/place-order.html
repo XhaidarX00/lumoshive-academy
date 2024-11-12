@@ -1,0 +1,91 @@
+{{ define "content" }}
+<h2>Buat Pesanan</h2>
+<div class="card">
+    <form id="order-form">
+        <div class="form-section">
+            <h3>Informasi Pelanggan</h3>
+            <div class="form-group">
+                <label for="name">Nama Lengkap</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="phone">Nomor Telepon</label>
+                <input type="tel" id="phone" name="phone" required>
+            </div>
+        </div>
+
+        <div class="form-section">
+            <h3>Alamat Pengiriman</h3>
+            <div class="form-group">
+                <label for="address">Alamat</label>
+                <textarea id="address" name="address" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="city">Kota</label>
+                <input type="text" id="city" name="city" required>
+            </div>
+            <div class="form-group">
+                <label for="postal-code">Kode Pos</label>
+                <input type="text" id="postal-code" name="postal-code" required>
+            </div>
+        </div>
+
+        <div class="form-section">
+            <h3>Detail Pesanan</h3>
+            <table id="order-items">
+                <thead>
+                    <tr>
+                        <th>Judul Buku</th>
+                        <th>Harga</th>
+                        <th>Jumlah</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Belajar HTML & CSS</td>
+                        <td>Rp150.000</td>
+                        <td><input type="number" name="quantity[]" value="1" min="1" class="quantity-input"></td>
+                        <td>Rp150.000</td>
+                    </tr>
+                    <tr>
+                        <td>JavaScript untuk Pemula</td>
+                        <td>Rp200.000</td>
+                        <td><input type="number" name="quantity[]" value="1" min="1" class="quantity-input"></td>
+                        <td>Rp200.000</td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="3"><strong>Total</strong></td>
+                        <td id="total-amount"><strong>Rp350.000</strong></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+
+        <div class="form-section">
+            <h3>Metode Pembayaran</h3>
+            <div class="form-group">
+                <label>
+                    <input type="radio" name="payment-method" value="transfer" checked> Transfer Bank
+                </label>
+            </div>
+            <div class="form-group">
+                <label>
+                    <input type="radio" name="payment-method" value="credit-card"> Kartu Kredit
+                </label>
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn">Buat Pesanan</button>
+            <a href="book-list.html" class="btn btn-secondary">Kembali ke Daftar Buku</a>
+        </div>
+    </form>
+</div>
+{{ end }}

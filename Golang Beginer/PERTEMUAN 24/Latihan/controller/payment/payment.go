@@ -15,11 +15,22 @@ import (
 	"time"
 
 	"github.com/go-chi/chi/v5"
+	"go.uber.org/zap"
 )
 
-var Svc *service.Service
+type Payment struct {
+	Service *service.Service
+	logger  *zap.Logger
+}
 
-func CreatePayment(w http.ResponseWriter, r *http.Request) {
+func NewPaymenHandelr(serv *service.Service, log *zap.Logger) *Payment {
+	return &Payment{
+		Service: serv,
+		logger:  log,
+	}
+}
+
+func (p *Payment) CreatePayment(w http.ResponseWriter, r *http.Request) {
 	scheme := "http://"
 	if r.TLS != nil {
 		scheme = "https://"
@@ -28,6 +39,7 @@ func CreatePayment(w http.ResponseWriter, r *http.Request) {
 
 	file, data, err := r.FormFile("photo")
 	if err != nil {
+		p.logger.Error("Error createpaymenthandler", zap.Error(err))
 		library.ResponseToJson(w, err.Error(), nil)
 		return
 	}
@@ -35,11 +47,13 @@ func CreatePayment(w http.ResponseWriter, r *http.Request) {
 
 	dst, err := os.Create(filepath.Join("asset/", data.Filename))
 	if err != nil {
+		p.logger.Error("Error createpaymenthandler", zap.Error(err))
 		library.ResponseToJson(w, err.Error(), nil)
 		return
 	}
 	_, err = io.Copy(dst, file)
 	if err != nil {
+		p.logger.Error("Error createpaymenthandler", zap.Error(err))
 		library.ResponseToJson(w, err.Error(), nil)
 		return
 	}
@@ -48,6 +62,7 @@ func CreatePayment(w http.ResponseWriter, r *http.Request) {
 	is_active := r.FormValue("is_active")
 	is_activeBool, err := strconv.ParseBool(is_active)
 	if err != nil {
+		p.logger.Error("Error createpaymenthandler", zap.Error(err))
 		library.ResponseToJson(w, err.Error(), nil)
 		return
 	}
@@ -65,7 +80,8 @@ func CreatePayment(w http.ResponseWriter, r *http.Request) {
 		DeletedAt: nil,
 	}
 
-	if err := Svc.Repo.Create(&payment_); err != nil {
+	if err := p.Service.Repo.Create(&payment_); err != nil {
+		p.logger.Error("Error createpaymenthandler", zap.Error(err))
 		response := library.InternalServerError("Gagal Menambahkan Payment")
 		library.JsonResponse(w, response)
 		return
@@ -80,9 +96,10 @@ func CreatePayment(w http.ResponseWriter, r *http.Request) {
 	library.ResponseToJson(w, "Berhasil Menambahkan Payment", result)
 }
 
-func GetAllPayments(w http.ResponseWriter, r *http.Request) {
-	payments, err := Svc.Repo.GetAll()
+func (p *Payment) GetAllPayments(w http.ResponseWriter, r *http.Request) {
+	payments, err := p.Service.Repo.GetAll()
 	if err != nil {
+		p.logger.Error("Error GetAllPayments", zap.Error(err))
 		response := library.InternalServerError(err.Error())
 		library.JsonResponse(w, response)
 		return
@@ -91,15 +108,27 @@ func GetAllPayments(w http.ResponseWriter, r *http.Request) {
 	library.ResponseToJson(w, "Berhasil Get Payment", payments)
 }
 
-func GetPaymentByID(w http.ResponseWriter, r *http.Request) {
+func (p *Payment) GetPaymentByID(w http.ResponseWriter, r *http.Request) {
 	id, err := strconv.Atoi(chi.URLParam(r, "id"))
 	if err != nil {
+		p.logger.Error("Error GetPaymentByID", zap.Error(err))
 		library.ResponseToJson(w, err.Error(), nil)
+		// p.logger.Error("Gagal mendapatkan Id User",
+		// 	zap.String("Name Handler", "Controller.Payment"),
+		// 	zap.String("Name Func", "GetPaymentByID"),
+		// 	zap.Error(err),
+		// )
 		return
 	}
 
-	payment, err := Svc.Repo.GetByID(id)
+	payment, err := p.Service.Repo.GetByID(id)
 	if err != nil {
+		p.logger.Error("Error GetPaymentByID", zap.Error(err))
+		// p.logger.Error("Terjadi Kesalahan database",
+		// 	zap.String("Name Handler", "Controller.Payment"),
+		// 	zap.String("Name Func", "GetPaymentByID"),
+		// 	zap.Error(err),
+		// )
 		response := library.NotFoundRequest(err.Error())
 		library.JsonResponse(w, response)
 		return
@@ -108,7 +137,7 @@ func GetPaymentByID(w http.ResponseWriter, r *http.Request) {
 	library.ResponseToJson(w, "Berhasil Get Payment", payment)
 }
 
-func UpdatePayment(w http.ResponseWriter, r *http.Request) {
+func (p *Payment) UpdatePayment(w http.ResponseWriter, r *http.Request) {
 	scheme := "http://"
 	if r.TLS != nil {
 		scheme = "https://"
@@ -117,6 +146,7 @@ func UpdatePayment(w http.ResponseWriter, r *http.Request) {
 
 	file, data, err := r.FormFile("photo")
 	if err != nil {
+		p.logger.Error("Error UpdatePayment", zap.Error(err))
 		library.ResponseToJson(w, err.Error(), nil)
 		return
 	}
@@ -124,11 +154,13 @@ func UpdatePayment(w http.ResponseWriter, r *http.Request) {
 
 	dst, err := os.Create(filepath.Join("asset/", data.Filename))
 	if err != nil {
+		p.logger.Error("Error UpdatePayment", zap.Error(err))
 		library.ResponseToJson(w, err.Error(), nil)
 		return
 	}
 	_, err = io.Copy(dst, file)
 	if err != nil {
+		p.logger.Error("Error UpdatePayment", zap.Error(err))
 		library.ResponseToJson(w, err.Error(), nil)
 		return
 	}
@@ -137,6 +169,7 @@ func UpdatePayment(w http.ResponseWriter, r *http.Request) {
 	is_active := r.FormValue("is_active")
 	is_activeBool, err := strconv.ParseBool(is_active)
 	if err != nil {
+		p.logger.Error("Error UpdatePayment", zap.Error(err))
 		library.ResponseToJson(w, err.Error(), nil)
 		return
 	}
@@ -154,12 +187,14 @@ func UpdatePayment(w http.ResponseWriter, r *http.Request) {
 
 	id, err := strconv.Atoi(chi.URLParam(r, "id"))
 	if err != nil {
+		p.logger.Error("Error UpdatePayment", zap.Error(err))
 		library.ResponseToJson(w, err.Error(), nil)
 		return
 	}
 
 	payment_.ID = id
-	if err := Svc.Repo.Update(&payment_); err != nil {
+	if err := p.Service.Repo.Update(&payment_); err != nil {
+		p.logger.Error("Error UpdatePayment", zap.Error(err))
 		response := library.InternalServerError("Gagal Update Payment")
 		library.JsonResponse(w, response)
 		return
@@ -168,14 +203,16 @@ func UpdatePayment(w http.ResponseWriter, r *http.Request) {
 	library.ResponseToJson(w, "Berhasil Update Payment", payment_)
 }
 
-func DeletePayment(w http.ResponseWriter, r *http.Request) {
+func (p *Payment) DeletePayment(w http.ResponseWriter, r *http.Request) {
 	id, err := strconv.Atoi(chi.URLParam(r, "id"))
 	if err != nil {
+		p.logger.Error("Error DeletePayment", zap.Error(err))
 		library.ResponseToJson(w, err.Error(), nil)
 		return
 	}
 
-	if err := Svc.Repo.Delete(id); err != nil {
+	if err := p.Service.Repo.Delete(id); err != nil {
+		p.logger.Error("Error DeletePayment", zap.Error(err))
 		response := library.InternalServerError(err.Error())
 		library.JsonResponse(w, response)
 		return

@@ -1,23 +1,38 @@
 package bookstore
 
 import (
-	"latihan/controller"
+	pagehandler "latihan/controller/pageHandler"
 	"latihan/model/books"
 	"latihan/service"
 	"net/http"
 	"strconv"
+
+	"go.uber.org/zap"
 )
 
-func AddBookHandler(w http.ResponseWriter, r *http.Request) {
+type Books struct {
+	Service *service.Service
+	logger  *zap.Logger
+}
+
+func NewBooksHandelr(serv *service.Service, log *zap.Logger) *Books {
+	return &Books{
+		Service: serv,
+		logger:  log,
+	}
+}
+
+func (b *Books) AddBookHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
-		controller.RenderTemplate(w, "add-book.html", nil)
+		pagehandler.RenderTemplate(w, "add-book.html", nil)
 		return
 	}
 
 	if r.Method == "POST" {
 		price, err := strconv.Atoi(r.FormValue("price"))
 		if err != nil {
-			controller.ErrorPage(w, err.Error())
+			b.logger.Error("Error addbookshandler", zap.Error(err))
+			pagehandler.ErrorPage(w, err.Error())
 			return
 		}
 
@@ -26,7 +41,8 @@ func AddBookHandler(w http.ResponseWriter, r *http.Request) {
 		if diskon != "" {
 			diskon, err := strconv.ParseFloat(r.FormValue("discount"), 64)
 			if err != nil {
-				controller.ErrorPage(w, err.Error())
+				b.logger.Error("Error addbookshandler", zap.Error(err))
+				pagehandler.ErrorPage(w, err.Error())
 				return
 			}
 
@@ -44,9 +60,10 @@ func AddBookHandler(w http.ResponseWriter, r *http.Request) {
 			Discount: discount,
 		}
 
-		err = service.ServiceF.AddBookDataService(data)
+		err = b.Service.AddBookDataService(data)
 		if err != nil {
-			controller.ErrorPage(w, err.Error())
+			b.logger.Error("Error addbookshandler", zap.Error(err))
+			pagehandler.ErrorPage(w, err.Error())
 			return
 		}
 

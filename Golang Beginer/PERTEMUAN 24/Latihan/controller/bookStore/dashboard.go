@@ -1,17 +1,19 @@
 package bookstore
 
 import (
-	"latihan/controller"
+	pagehandler "latihan/controller/pageHandler"
 	"latihan/model"
-	"latihan/service"
 	"net/http"
+
+	"go.uber.org/zap"
 )
 
-func DashboardHandler(w http.ResponseWriter, r *http.Request) {
+func (b *Books) DashboardHandler(w http.ResponseWriter, r *http.Request) {
 	var data model.GetDhasboardData
-	err := service.ServiceF.GetDhasboardDataService(&data)
+	err := b.Service.GetDhasboardDataService(&data)
 	if err != nil {
-		controller.ErrorPage(w, err.Error())
+		b.logger.Error("Error Dashboardhandler", zap.Error(err))
+		pagehandler.ErrorPage(w, err.Error())
 		return
 	}
 
@@ -21,6 +23,6 @@ func DashboardHandler(w http.ResponseWriter, r *http.Request) {
 		"Highest_Rating": data.Highest_Rating,
 	}
 
-	controller.RenderTemplate(w, "dashboard.html", result)
+	pagehandler.RenderTemplate(w, "dashboard.html", result)
 
 }

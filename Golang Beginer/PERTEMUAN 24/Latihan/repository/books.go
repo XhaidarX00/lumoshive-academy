@@ -3,12 +3,15 @@ package repository
 import (
 	"latihan/model"
 	"latihan/model/books"
+
+	"go.uber.org/zap"
 )
 
 func (r *Repository) GetBookDataRepo(data *[]books.Book) error {
 	query := "SELECT * FROM books ORDER BY id"
 	rows, err := r.DB.Query(query)
 	if err != nil {
+		r.Logger.Error("Error GetBooksDataRepo", zap.Error(err))
 		return err
 	}
 
@@ -17,7 +20,8 @@ func (r *Repository) GetBookDataRepo(data *[]books.Book) error {
 	for rows.Next() {
 		var book books.Book
 		if err := rows.Scan(&book.ID, &book.Name, &book.Type, &book.Author, &book.Price, &book.Discount); err != nil {
-			panic(err)
+			r.Logger.Error("Error GetBooksDataRepo", zap.Error(err))
+			return err
 		}
 
 		*data = append(*data, book)
@@ -40,6 +44,7 @@ func (r *Repository) EditBookDataRepo(book books.Book) error {
 
 	_, err := r.DB.Exec(query, book.Name, book.Type, book.Author, book.Price, book.Discount, book.ID)
 	if err != nil {
+		r.Logger.Error("Error EditBooks", zap.Error(err))
 		return err
 	}
 
@@ -55,6 +60,7 @@ func (r *Repository) AddBookDataRepo(book books.Book) error {
 
 	_, err := r.DB.Exec(query, book.ID, book.Name, book.Type, book.Author, book.Price, book.Discount)
 	if err != nil {
+		r.Logger.Error("Error AddBooks", zap.Error(err))
 		return err
 	}
 
@@ -73,16 +79,19 @@ func (r *Repository) GetDhasboardDataRepo(data *model.GetDhasboardData) error {
 		case 0:
 			err := r.DB.QueryRow(q).Scan(&data.Highest_Rating)
 			if err != nil {
+				r.Logger.Error("Error GetDashboard", zap.Error(err))
 				return err
 			}
 		case 1:
 			err := r.DB.QueryRow(q).Scan(&data.Total_Sales)
 			if err != nil {
+				r.Logger.Error("Error GetDashboard", zap.Error(err))
 				return err
 			}
 		case 2:
 			err := r.DB.QueryRow(q).Scan(&data.Total_Books)
 			if err != nil {
+				r.Logger.Error("Error GetDashboard", zap.Error(err))
 				return err
 			}
 		}
@@ -95,6 +104,7 @@ func (r *Repository) DeleteBookRepo(id string) error {
 	query := "DELETE FROM books WHERE id = $1"
 	_, err := r.DB.Exec(query, id)
 	if err != nil {
+		r.Logger.Error("Error DeleteBook", zap.Error(err))
 		return err
 	}
 

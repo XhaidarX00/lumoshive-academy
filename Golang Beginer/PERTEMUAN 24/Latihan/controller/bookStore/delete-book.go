@@ -1,18 +1,18 @@
 package bookstore
 
 import (
-	"latihan/service"
 	"net/http"
 
-	"github.com/go-chi/chi"
+	"github.com/go-chi/chi/v5"
+	"go.uber.org/zap"
 )
 
-func DeleteBookHandler(w http.ResponseWriter, r *http.Request) {
+func (b *Books) DeleteBookHandler(w http.ResponseWriter, r *http.Request) {
 	idString := chi.URLParam(r, "bookID")
-	if err := service.ServiceF.DeleteBookService(idString); err != nil {
-		panic(err)
+	if err := b.Service.DeleteBookService(idString); err != nil {
+		b.logger.Error("Error deletebookhandler", zap.Error(err))
+		return
 	}
 
 	http.Redirect(w, r, "/api/book-list", http.StatusSeeOther)
-
 }

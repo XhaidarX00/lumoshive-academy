@@ -1,7 +1,8 @@
 package router
 
 import (
-	payments "latihan/controller/payment"
+	"latihan/controller"
+	middlewaree "latihan/middleware"
 	"log"
 	"net/http"
 
@@ -9,61 +10,61 @@ import (
 	"github.com/go-chi/chi/v5"
 )
 
-func InitRoute() {
+func InitRoute(ch *controller.Controller, mid *middlewaree.Middlewaree) {
 	r := chi.NewRouter()
 	r.Use(middleware.Logger)
 
 	fs := http.FileServer(http.Dir("asset/"))
 	r.Handle("/img/*", http.StripPrefix("/img", fs))
 
-	r.Route("/api/payments", func(r chi.Router) {
-		r.Post("/", payments.CreatePayment)
-		r.Get("/", payments.GetAllPayments)
-		r.Get("/{id}", payments.GetPaymentByID)
-		r.Put("/{id}", payments.UpdatePayment)
-		r.Delete("/{id}", payments.DeletePayment)
+	// r.With(logger.MiddlewareeLogger).Route("/api/payments", func(r chi.Router) {
+	// 	r.Get("/{id}", ch.Payments.GetPaymentByID)
+	// r.Post("/", payments.CreatePayment)
+	// r.Get("/", payments.GetAllPayments)
+	// r.Get("/{id}", payments.GetPaymentByID)
+	// r.Put("/{id}", payments.UpdatePayment)
+	// r.Delete("/{id}", payments.DeletePayment)
+	// })
+
+	r.With(mid.MiddlewareeLogger).Route("/", func(r chi.Router) {
+		r.Get("/", ch.Usershandler.LoginHandler)
+		r.Get("/login", ch.Usershandler.LoginHandler)
+		r.Post("/login", ch.Usershandler.LoginHandler)
+		r.With(mid.TokenMiddleware).Route("/api", func(r chi.Router) {
+			r.Get("/dashboard", ch.Books.DashboardHandler)
+			r.Get("/book-list", ch.Books.BookListHandler)
+			r.Get("/add-book", ch.Books.AddBookHandler)
+			r.Post("/add-book", ch.Books.AddBookHandler)
+
+			r.Route("/book", func(r chi.Router) {
+				r.Get("/discount", ch.Books.DiscountBookHandler)
+				r.Route("/{bookID}", func(r chi.Router) {
+					r.Get("/edit", ch.Books.EditBookHandler)
+					r.Post("/edit", ch.Books.EditBookHandler)
+					r.Get("/delete", ch.Books.DeleteBookHandler)
+				})
+			})
+
+			r.Route("/order", func(r chi.Router) {
+				r.Get("/", ch.Orders.OrderListHandler)
+				r.Route("/{orderID}", func(r chi.Router) {
+					r.Get("/", ch.Orders.OrderDetailHandler)
+				})
+			})
+
+			r.Route("/payments", func(r chi.Router) {
+				r.Post("/", ch.Payments.CreatePayment)
+				r.Get("/", ch.Payments.GetAllPayments)
+				r.Get("/{id}", ch.Payments.GetPaymentByID)
+				r.Put("/{id}", ch.Payments.UpdatePayment)
+				r.Delete("/{id}", ch.Payments.DeletePayment)
+			})
+
+			r.Route("/user", func(r chi.Router) {
+				r.Get("/logout", ch.Usershandler.LogoutHandler)
+			})
+		})
 	})
-
-	// r.Route("/", func(r chi.Router) {
-
-	// r.Get("/", usershandler.LoginHandler)
-	// r.Get("/login", usershandler.LoginHandler)
-	// r.Post("/login", usershandler.LoginHandler)
-	// r.With(middlewaree.TokenMiddleware).Route("/api", func(r chi.Router) {
-	// r.Get("/dashboard", bookstore.DashboardHandler)
-	// r.Get("/book-list", bookstore.BookListHandler)
-	// r.Get("/add-book", bookstore.AddBookHandler)
-	// r.Post("/add-book", bookstore.AddBookHandler)
-
-	// r.Route("/user", func(r chi.Router) {
-	// 	r.Get("/logout", usershandler.LogoutHandler)
-	// })
-
-	// r.Route("/book", func(r chi.Router) {
-	// 	r.Get("/discount", bookstore.DiscountBookHandler)
-	// 	r.Route("/{bookID}", func(r chi.Router) {
-	// 		r.Get("/edit", bookstore.EditBookHandler)
-	// 		r.Post("/edit", bookstore.EditBookHandler)
-	// 		r.Get("/delete", bookstore.DeleteBookHandler)
-	// 	})
-	// })
-
-	// r.Route("/order", func(r chi.Router) {
-	// 	r.Get("/", orders.OrderListHandler)
-	// 	r.Route("/{orderID}", func(r chi.Router) {
-	// 		r.Get("/detail", orders.OrderDetailHandler)
-	// 	})
-	// })
-
-	// r.Route("/payments", func(r chi.Router) {
-	// 	r.Post("/", paymentHandler.CreatePayment)
-	// 	r.Get("/", paymentHandler.GetAllPayments)
-	// 	r.Get("/{id}", paymentHandler.GetPaymentByID)
-	// 	r.Put("/{id}", paymentHandler.UpdatePayment)
-	// 	r.Delete("/{id}", paymentHandler.DeletePayment)
-	// })
-	// })
-	// })
 
 	r.MethodNotAllowed(MethodNotAllowedHandler)
 

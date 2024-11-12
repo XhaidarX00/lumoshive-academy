@@ -3,7 +3,7 @@
 <div class="card">
     <div class="order-summary">
         <h3>Ringkasan Pesanan</h3>
-        <p><strong>Nomor Pesanan:</strong> ORD123456</p>
+        <p><strong>Nomor Pesanan:</strong> {{.Order.ID}}</p>
         <p><strong>Tanggal Pesanan:</strong> 15 Januari 2024</p>
         <p><strong>Status Pesanan:</strong> <span class="status-completed">Selesai</span></p>
         <p><strong>Total Pembayaran:</strong> Rp500.000</p>
@@ -50,7 +50,7 @@
     </div>
     <div class="order-actions">
         <a href="#" class="btn">Cetak Invoice</a>
-        <a href="order-list.html" class="btn">Kembali ke Daftar Pesanan</a>
+        <a href="/api/order" class="btn">Kembali ke Daftar Pesanan</a>
     </div>
 </div>
 {{ end }}

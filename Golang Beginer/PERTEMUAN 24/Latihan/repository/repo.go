@@ -4,41 +4,43 @@ import (
 	"database/sql"
 	"fmt"
 	"latihan/database"
-	"latihan/model"
-	"latihan/model/books"
-	"latihan/model/customers"
-	"latihan/model/orders"
-	"latihan/model/payment"
 	"time"
+
+	"go.uber.org/zap"
 )
 
-type RepositoryI interface {
-	AddBookDataRepo(book books.Book) error
-	CleanExpiredTokensRepo() string
-	Create(payment *payment.Payment) error
-	Delete(id int) error
-	DeleteBookRepo(id string) error
-	EditBookDataRepo(book books.Book) error
-	GenerateTkn(userID int) (string, error)
-	GetAll() ([]payment.Payment, error)
-	GetBookDataRepo(data *[]books.Book) error
-	GetByID(id int) (*payment.Payment, error)
-	GetCustomerByIDRepo(id int) (string, error)
-	GetDhasboardDataRepo(data *model.GetDhasboardData) error
-	GetOrderDataRepo(data *[]orders.Order) error
-	GetRoleRepo(token string) (string, error)
-	LoginRepo(user *customers.Customer) error
-	RegisterRepo(user *customers.Customer) error
-	TokenCheckRepo(token string) string
-	Update(payment *payment.Payment) error
-}
+// type RepositoryI interface {
+// 	AddBookDataRepo(book books.Book) error
+// 	CleanExpiredTokensRepo() string
+// 	Create(payment *payment.Payment) error
+// 	Delete(id int) error
+// 	DeleteBookRepo(id string) error
+// 	EditBookDataRepo(book books.Book) error
+// 	GenerateTkn(userID int) (string, error)
+// 	GetAll() ([]payment.Payment, error)
+// 	GetBookDataRepo(data *[]books.Book) error
+// 	GetByID(id int) (*payment.Payment, error)
+// 	GetCustomerByIDRepo(id int) (string, error)
+// 	GetDhasboardDataRepo(data *model.GetDhasboardData) error
+// 	GetOrderDataRepo(data *[]orders.Order) error
+// 	GetOrderDataRepo(data *[]orders.Order) error
+// 	GetRoleRepo(token string) (string, error)
+// 	LoginRepo(user *customers.Customer) error
+// 	RegisterRepo(user *customers.Customer) error
+// 	TokenCheckRepo(token string) string
+// 	Update(payment *payment.Payment) error
+// }
 
 type Repository struct {
-	DB *sql.DB
+	DB     *sql.DB
+	Logger *zap.Logger
 }
 
-func NewRepository(db *sql.DB) RepositoryI {
-	return &Repository{DB: db}
+func NewRepository(db *sql.DB, log *zap.Logger) *Repository {
+	return &Repository{
+		DB:     db,
+		Logger: log,
+	}
 }
 
 func (r *Repository) TokenCheckRepo(token string) string {
@@ -50,11 +52,13 @@ func (r *Repository) TokenCheckRepo(token string) string {
 	query := "SELECT expires_at FROM tokens WHERE token = $1"
 	err := r.DB.QueryRow(query, token).Scan(&expiresAt)
 	if err != nil {
+		r.Logger.Error("Invalid or expired token", zap.Error(err))
 		return "Invalid or expired token"
 	}
 
 	// Memeriksa apakah token sudah kadaluarsa
 	if time.Now().After(expiresAt) {
+		r.Logger.Error("Error ", zap.String("TokenCheckRepo", "Token has expired"))
 		return "Token has expired"
 	}
 
@@ -66,6 +70,7 @@ func (r *Repository) CleanExpiredTokensRepo() string {
 	query := "DELETE FROM tokens WHERE expires_at < $1"
 	_, err := database.DB.Exec(query, time.Now())
 	if err != nil {
+		r.Logger.Error("Error CleanExpiredTokenRepo", zap.Error(err))
 		return fmt.Sprintf("Failed to clean expired tokens: %v", err)
 	}
 

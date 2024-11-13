@@ -7,4 +7,5 @@ type Book struct {
 	Author   string
 	Price    int
 	Discount float64
+	Rating   float64
 }

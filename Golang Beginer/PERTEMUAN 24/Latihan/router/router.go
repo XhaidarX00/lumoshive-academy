@@ -34,6 +34,7 @@ func InitRoute(ch *controller.Controller, mid *middlewaree.Middlewaree) {
 			r.Get("/dashboard", ch.Books.DashboardHandler)
 			r.Get("/book-list", ch.Books.BookListHandler)
 			r.Get("/add-book", ch.Books.AddBookHandler)
+			r.Get("/review", ch.Books.SubmitReviewHandler)
 			r.Post("/add-book", ch.Books.AddBookHandler)
 
 			r.Route("/book", func(r chi.Router) {
@@ -47,6 +48,7 @@ func InitRoute(ch *controller.Controller, mid *middlewaree.Middlewaree) {
 
 			r.Route("/order", func(r chi.Router) {
 				r.Get("/", ch.Orders.OrderListHandler)
+				r.Get("/add", ch.Orders.AddOrderHandler)
 				r.Route("/{orderID}", func(r chi.Router) {
 					r.Get("/", ch.Orders.OrderDetailHandler)
 				})

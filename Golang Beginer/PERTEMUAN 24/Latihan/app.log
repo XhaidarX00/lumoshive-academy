@@ -1,1 +1,6 @@
-{"L":"INFO","T":"2024-11-12T22:30:36.428+0700","M":"Http Request","url":"/api/order/O001","method":"GET","duration":"65.2121ms"}
+{"L":"INFO","T":"2024-11-13T09:39:59.214+0700","M":"Http Request","url":"/login","method":"GET","duration":"896.1µs"}
+{"L":"INFO","T":"2024-11-13T09:40:00.702+0700","M":"Http Request","url":"/api/order","method":"GET","duration":"91.6229ms"}
+{"L":"INFO","T":"2024-11-13T09:40:45.877+0700","M":"Http Request","url":"/api/order/O001","method":"GET","duration":"1.0873ms"}
+{"L":"INFO","T":"2024-11-13T09:41:00.149+0700","M":"Http Request","url":"/api/book-list","method":"GET","duration":"6.6459ms"}
+{"L":"INFO","T":"2024-11-13T09:41:03.539+0700","M":"Http Request","url":"/api/order","method":"GET","duration":"7.2102ms"}
+{"L":"INFO","T":"2024-11-13T09:45:56.278+0700","M":"Http Request","url":"/api/order/O001","method":"GET","duration":"1.2768ms"}

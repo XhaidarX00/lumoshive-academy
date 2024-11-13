@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"latihan/library"
 	"latihan/model/orders"
 
 	"go.uber.org/zap"
@@ -26,7 +27,14 @@ func (r *Repository) GetOrderDataRepo(data *[]orders.Order) error {
 			&order.OrderDate,
 			&order.Status,
 		); err != nil {
-			panic(err)
+			r.Logger.Error("Error GetOrderDataRepo", zap.Error(err))
+			return err
+		}
+
+		order.OrderDate, err = library.ChangeFormatTime(order.OrderDate)
+		if err != nil {
+			r.Logger.Error("Error GetOrderDataRepo", zap.Error(err))
+			return err
 		}
 
 		name, err := r.GetCustomerByIDRepo(order.Customer_id)

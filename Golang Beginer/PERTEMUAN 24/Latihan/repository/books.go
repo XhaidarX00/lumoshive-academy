@@ -24,6 +24,12 @@ func (r *Repository) GetBookDataRepo(data *[]books.Book) error {
 			return err
 		}
 
+		book.Rating, err = r.calculateAverageRating(book.ID)
+		if err != nil {
+			r.Logger.Error("Error GetBooksDataRepo", zap.Error(err))
+			return err
+		}
+
 		*data = append(*data, book)
 	}
 
@@ -109,4 +115,36 @@ func (r *Repository) DeleteBookRepo(id string) error {
 	}
 
 	return nil
+}
+
+// Fungsi untuk menghitung rata-rata rating
+func (r *Repository) calculateAverageRating(bookID string) (float64, error) {
+	var count int
+	var avgRating float64
+
+	// Hitung jumlah data
+	err := r.DB.QueryRow("SELECT COUNT(*) FROM reviews").Scan(&count)
+	if err != nil {
+		return 0, err
+	}
+
+	if count <= 10 {
+		err = r.DB.QueryRow("SELECT COALESCE(ROUND(AVG(rating), 1), 0) FROM reviews WHERE book_id = $1", bookID).Scan(&avgRating)
+	} else {
+		err = r.DB.QueryRow(`
+			SELECT COALESCE(ROUND(AVG(rating), 1), 0) 
+			FROM (
+				SELECT rating 
+				FROM reviews 
+				WHERE book_id = $1
+				ORDER BY review_date DESC 
+				LIMIT 25
+			) AS latest_reviews
+		`, bookID).Scan(&avgRating)
+	}
+
+	if err != nil {
+		return 0, err
+	}
+	return avgRating, nil
 }

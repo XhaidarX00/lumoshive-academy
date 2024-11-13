@@ -10,6 +10,7 @@
                 <th>Pengarang</th>
                 <th>Harga</th>
                 <th>Diskon</th>
+                <th>Rating</th>
                 <th colspan="2">Aksi</th>
             </tr>
         </thead>
@@ -22,6 +23,7 @@
                 <td>{{.Author}}</td>
                 <td>{{.Price}}</td>
                 <td>{{.Discount}}</td>
+                <td>{{.Rating}}</td>
                 <td>
                     <form action="/api/book/{{.ID}}/edit">
                         <button type="submit" class="btn">Edit</button>

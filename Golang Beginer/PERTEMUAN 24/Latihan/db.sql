@@ -299,3 +299,20 @@ SELECT
 	FROM orders 
     WHERE id = 'O001'
     ORDER BY id;
+    
+
+SELECT * FROM reviews;
+
+SELECT ROUND(AVG(rating), 1)
+			FROM (
+				SELECT rating 
+				FROM reviews 
+				WHERE book_id = 'B002'
+				ORDER BY review_date DESC 
+				LIMIT 25
+			) AS latest_reviews;
+
+
+SELECT ROUND(AVG(rating), 1) FROM reviews WHERE book_id ='B002';
+
+SELECT * FROM orders;

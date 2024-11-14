@@ -24,7 +24,7 @@ type Service struct {
 var Servicset = wire.NewSet(
 	database.ConnectDB,
 	library.InitLog,
-	repository.NewTravel,
+	repository.NewRepo,
 	service.NewService,
 	controller.NewTravelHandelr,
 )

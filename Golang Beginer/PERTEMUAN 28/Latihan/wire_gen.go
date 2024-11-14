@@ -25,7 +25,7 @@ func InitializeService() (Service, error) {
 	if err != nil {
 		return Service{}, err
 	}
-	travel := repository.NewTravel(db)
+	travel := repository.NewRepo(db)
 	serviceService := service.NewService(travel)
 	logger := library.InitLog()
 	controllerTravel := controller.NewTravelHandelr(serviceService, logger)
@@ -45,4 +45,4 @@ type Service struct {
 	Logger  *zap.Logger
 }
 
-var Servicset = wire.NewSet(database.ConnectDB, library.InitLog, repository.NewTravel, service.NewService, controller.NewTravelHandelr)
+var Servicset = wire.NewSet(database.ConnectDB, library.InitLog, repository.NewRepo, service.NewService, controller.NewTravelHandelr)

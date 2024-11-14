@@ -14,6 +14,8 @@ func InitRoute(ch *controller.Travel, logger *zap.Logger) {
 	r.Use(middleware.Logger)
 
 	r.Get("/api/", ch.TravelController)
+	r.Get("/api/detail", ch.PlaceDetailController)
+	r.Post("/api/add-transaction", ch.AddTransactionController)
 
 	r.MethodNotAllowed(MethodNotAllowedHandler)
 

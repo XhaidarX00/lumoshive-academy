@@ -72,3 +72,18 @@ type PhotoDetailPlace struct {
 	Photo_url   string `json:"photo_url"`
 	Description string `json:"description"`
 }
+
+type Locations struct {
+	ID          int    `json:"id"`
+	Longlat     string `json:"longlat"`
+	Description string `json:"description"`
+}
+
+type TourPLan struct {
+	ID            int    `json:"id"`
+	Day_number    int    `json:"day_number"`
+	Title         string `json:"title"`
+	Description   string `json:"description"`
+	Accommodation string `json:"accommodation"`
+	Meals         string `json:"meals"`
+}

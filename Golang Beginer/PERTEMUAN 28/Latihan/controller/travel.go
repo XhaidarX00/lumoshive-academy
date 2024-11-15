@@ -68,3 +68,46 @@ func (t *Travel) PlaceDetailController(w http.ResponseWriter, r *http.Request) {
 
 	library.ResponseToJson(w, "Berhasil Mendapatkan Data", data)
 }
+
+func (t *Travel) GetLocationByIdController(w http.ResponseWriter, r *http.Request) {
+	place_id, err := strconv.Atoi(r.URL.Query().Get("place_id"))
+	if err != nil {
+		t.logger.Error("Error PlaceDetailController", zap.Error(err))
+		response := library.NotFoundRequest("Data Tidak Ditemukan")
+		library.JsonResponse(w, response)
+		return
+	}
+
+	var data model.Locations
+	data.ID = place_id
+	err = t.Service.LocationByIdService(&data)
+	if err != nil {
+		t.logger.Error("Error GetLocationByIdController", zap.Error(err))
+		response := library.NotFoundRequest("Data Tidak Ditemukan")
+		library.JsonResponse(w, response)
+		return
+	}
+
+	library.ResponseToJson(w, "Berhasil Mendapatkan Location", data)
+}
+
+func (t *Travel) GetTourPLanByIdController(w http.ResponseWriter, r *http.Request) {
+	tour_id, err := strconv.Atoi(r.URL.Query().Get("tour_id"))
+	if err != nil {
+		t.logger.Error("Error PlaceDetailController", zap.Error(err))
+		response := library.NotFoundRequest("Data Tidak Ditemukan")
+		library.JsonResponse(w, response)
+		return
+	}
+
+	var data []model.TourPLan
+	err = t.Service.TourPLanByIdService(&data, tour_id)
+	if err != nil {
+		t.logger.Error("Error GetTourPLanByIdController", zap.Error(err))
+		response := library.NotFoundRequest("Data Tidak Ditemukan")
+		library.JsonResponse(w, response)
+		return
+	}
+
+	library.ResponseToJson(w, "Berhasil Mendapatkan Tour Plan", data)
+}

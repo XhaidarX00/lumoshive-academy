@@ -164,3 +164,57 @@ func (t *Repo) PlaceDetailRepo(data *model.ResponsePlaceDetail, id int) error {
 
 	return nil
 }
+
+func (t *Repo) LocationByIdRepo(data *model.Locations) error {
+	query := `
+	SELECT 
+		id, 
+		loglat, 
+		description
+	FROM locations
+	WHERE place_id = $1`
+
+	if err := t.DB.QueryRow(query, data.ID).Scan(&data.ID, &data.Longlat, &data.Description); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (t *Repo) TourPLanByIdRepo(datas *[]model.TourPLan, tour_id int) error {
+	query := `
+	SELECT 
+		tp.plan_id, 
+		tp.title, 
+		tp.day_number, 
+		tp.description, 
+		tp.meals, 
+		tp.accommodation
+	FROM tour_plan tp
+	JOIN tours t ON t.tour_id = tp.tour_id
+	JOIN event e ON e.id = t.event_id
+	WHERE tp.tour_id = $1`
+
+	rows, err := t.DB.Query(query, tour_id)
+	if err != nil {
+		return err
+	}
+	defer rows.Close()
+	for rows.Next() {
+		var data model.TourPLan
+		if err := rows.Scan(
+			&data.ID,
+			&data.Title,
+			&data.Day_number,
+			&data.Description,
+			&data.Meals,
+			&data.Accommodation,
+		); err != nil {
+			return err
+		}
+
+		*datas = append(*datas, data)
+	}
+
+	return nil
+}

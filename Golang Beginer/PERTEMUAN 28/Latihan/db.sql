@@ -47,6 +47,35 @@ CREATE TABLE gallery (
 );
 
 
+CREATE TABLE locations (
+    id SERIAL PRIMARY KEY,
+    place_id INT REFERENCES place(id) ON DELETE CASCADE,
+    loglat TEXT,
+    description TEXT
+);
+
+
+CREATE TABLE tours (
+    tour_id SERIAL PRIMARY KEY,
+    tour_name VARCHAR(100) NOT NULL,
+    event_id INT REFERENCES event(id) ON DELETE CASCADE,
+    description TEXT,
+    duration_days INT NOT NULL,
+    start_date DATE,
+    end_date DATE
+);
+
+
+CREATE TABLE tour_plan (
+    plan_id SERIAL PRIMARY KEY,
+    tour_id INT REFERENCES tours(tour_id) ON DELETE CASCADE,
+    day_number INT NOT NULL,
+    title VARCHAR(100),
+    description TEXT,
+    accommodation VARCHAR(50),
+    meals VARCHAR(100)
+);
+
 
 
 SELECT 
@@ -139,7 +168,20 @@ VALUES
 ('Ali', 'ali@example.com', '081234567890', 'Booking untuk liburan keluarga', 1, TRUE);
 
 
-SELECT * FROM transaction;
+SELECT * FROM locations;
+
+
+SELECT id, loglat, description
+FROM locations
+WHERE place_id = 1;
+
+SELECT tp.plan_id, tp.title, tp.day_number, tp.description, tp.meals, tp.accommodation
+FROM tour_plan tp
+JOIN tours t ON t.tour_id = tp.tour_id
+JOIN event e ON e.id = t.event_id
+WHERE tp.tour_id = 10;
+
+
 
 -- Insert data dummy untuk tabel `place`
 INSERT INTO place (name, description, photo_url, price)
@@ -295,3 +337,95 @@ VALUES
 ('https://example.com/photo_malang5.jpg', 12, 'Jalan setapak di Malang Garden'),
 ('https://example.com/photo_malang6.jpg', 12, 'Pemandangan hijau di Malang Garden');
 
+
+
+INSERT INTO locations (place_id, loglat, description)
+VALUES 
+(1, '-8.409518, 115.188919', 'Pantai dengan pasir putih dan pemandangan indah di Bali.'),
+(2, '-6.208763, 106.845599', 'Museum sejarah di pusat kota Jakarta, dengan banyak peninggalan bersejarah.'),
+(3, '-6.917464, 107.619123', 'Taman kota yang menawarkan suasana sejuk dan alami di Bandung.'),
+(4, '-8.650000, 116.324908', 'Bukit dengan pemandangan sunset yang memukau di Lombok.'),
+(5, '-7.795580, 110.369490', 'Candi kuno di Yogyakarta, peninggalan kerajaan masa lalu.'),
+(6, '-7.257472, 112.752088', 'Kebun binatang terbesar di Surabaya, Jawa Timur.'),
+(7, '-5.147665, 119.432732', 'Pantai dengan pasir hitam yang unik di Makassar.'),
+(8, '3.595196, 98.672223', 'Danau yang tenang dan damai di Medan.'),
+(9, '-7.942493, 112.953012', 'Gunung dengan kawah megah dan panorama indah di Bromo.'),
+(10, '-0.234689, 130.516528', 'Pulau yang mempesona dengan keindahan laut dan terumbu karang di Raja Ampat.'),
+(11, '1.482554, 124.843092', 'Spot diving terbaik dengan keanekaragaman laut yang menakjubkan di Manado.'),
+(12, '-7.982298, 112.630414', 'Kebun yang penuh dengan bunga indah di Malang.');
+
+
+-- Data Dummy untuk tabel `tours`
+INSERT INTO tours (tour_name, event_id, description, duration_days, start_date, end_date)
+VALUES 
+('Bali Beach Tour', 1, 'Menikmati keindahan pantai Bali dengan pemandangan indah dan pasir putih.', 3, '2024-12-01', '2024-12-03'),
+('Jakarta Museum Tour', 2, 'Tur sejarah mengunjungi museum dan tempat bersejarah di Jakarta.', 2, '2024-11-05', '2024-11-06'),
+('Bandung Nature Tour', 3, 'Mengunjungi taman kota di Bandung yang sejuk dan alami.', 1, '2024-11-12', '2024-11-12'),
+('Lombok Sunset Tour', 4, 'Tur menikmati pemandangan sunset yang memukau di bukit Lombok.', 1, '2024-11-20', '2024-11-20'),
+('Yogyakarta Temple Tour', 5, 'Tur mengunjungi candi-candi peninggalan sejarah di Yogyakarta.', 2, '2024-11-18', '2024-11-19'),
+('Surabaya Zoo Safari', 6, 'Petualangan melihat berbagai satwa di kebun binatang terbesar di Jawa Timur.', 1, '2024-11-25', '2024-11-25'),
+('Makassar Beach Excursion', 7, 'Tur ke pantai Makassar yang unik dengan pasir hitam.', 1, '2024-12-15', '2024-12-15'),
+('Medan Lake Getaway', 8, 'Liburan yang menenangkan di tepi danau di Medan.', 2, '2024-12-10', '2024-12-11'),
+('Bromo Mountain Adventure', 9, 'Mendaki Gunung Bromo untuk melihat pemandangan matahari terbit.', 2, '2024-11-29', '2024-11-30'),
+('Raja Ampat Diving Tour', 10, 'Petualangan menyelam di pulau Raja Ampat yang kaya akan keanekaragaman laut.', 5, '2024-12-20', '2024-12-24'),
+('Manado Diving Experience', 11, 'Pengalaman menyelam yang mengesankan di Manado.', 3, '2024-11-22', '2024-11-24'),
+('Malang Flower Garden Tour', 12, 'Tur kebun yang menampilkan berbagai jenis bunga indah di Malang.', 1, '2024-11-14', '2024-11-14');
+
+
+
+-- Data Dummy untuk tabel `tour_plan`
+INSERT INTO tour_plan (tour_id, day_number, title, description, accommodation, meals)
+VALUES
+-- Bali Beach Tour
+(1, 1, 'Arrival at Bali', 'Tiba di Bali dan check-in di hotel.', '5 Star Hotel', 'Welcome Dinner'),
+(1, 2, 'Beach Day', 'Menikmati keindahan pantai Bali dengan pasir putih.', '5 Star Hotel', 'Breakfast, Lunch'),
+(1, 3, 'Island Exploration', 'Jelajahi tempat-tempat menarik di sekitar pantai Bali.', '5 Star Hotel', 'Breakfast'),
+(1, 4, 'Cultural Tour', 'Mengunjungi tempat budaya seperti Pura dan pasar seni.', '5 Star Hotel', 'Breakfast, Lunch'),
+(1, 5, 'Free Day', 'Hari bebas untuk bersantai atau aktivitas pribadi.', '5 Star Hotel', 'Breakfast'),
+-- Jakarta Museum Tour
+(2, 1, 'Jakarta City Tour', 'Tur kota Jakarta, mengunjungi Monas dan museum sejarah.', '4 Star Hotel', 'Breakfast, Lunch'),
+(2, 2, 'Museum Exploration', 'Mengunjungi museum terkenal di Jakarta seperti Museum Nasional.', '4 Star Hotel', 'Breakfast'),
+(2, 3, 'Old Town Tour', 'Menjelajahi kota tua Jakarta dan bangunan kolonial.', '4 Star Hotel', 'Breakfast, Lunch'),
+-- Bandung Nature Tour
+(3, 1, 'Exploring Bandung', 'Menikmati pemandangan alam di taman kota Bandung.', '3 Star Hotel', 'Lunch'),
+(3, 2, 'Mountain Adventure', 'Petualangan mendaki di daerah pegunungan sekitar Bandung.', '3 Star Hotel', 'Breakfast, Lunch'),
+(3, 3, 'Shopping and Culinary Tour', 'Berbelanja dan menikmati kuliner khas Bandung.', '3 Star Hotel', 'Breakfast'),
+-- Lombok Sunset Tour
+(4, 1, 'Arrival and Check-in', 'Tiba di Lombok dan check-in di penginapan.', 'Guest House', 'Dinner'),
+(4, 2, 'Sunset at Lombok Hill', 'Menikmati pemandangan matahari terbenam yang indah dari bukit di Lombok.', 'Guest House', 'Breakfast, Dinner'),
+(4, 3, 'Beach and Snorkeling', 'Hari penuh dengan aktivitas pantai dan snorkeling.', 'Guest House', 'Breakfast, Lunch'),
+-- Yogyakarta Temple Tour
+(5, 1, 'Temple Visit', 'Mengunjungi Candi Borobudur dan Prambanan di Yogyakarta.', 'Guest House', 'Breakfast, Lunch'),
+(5, 2, 'Cultural Village Tour', 'Menjelajahi desa budaya dan melihat kerajinan lokal.', 'Guest House', 'Breakfast'),
+(5, 3, 'City Exploration', 'Menjelajahi kota Yogyakarta, melihat kerajinan lokal dan kuliner khas.', 'Guest House', 'Breakfast'),
+-- Surabaya Zoo Safari
+(6, 1, 'Zoo Tour', 'Tur di kebun binatang terbesar di Jawa Timur, Surabaya.', '4 Star Hotel', 'Breakfast, Lunch'),
+(6, 2, 'Safari Adventure', 'Tur safari melihat berbagai satwa eksotis.', '4 Star Hotel', 'Breakfast'),
+(6, 3, 'Shopping and Free Time', 'Waktu bebas untuk berbelanja di pusat kota.', '4 Star Hotel', 'Breakfast'),
+-- Makassar Beach Excursion
+(7, 1, 'Arrival and Beach Check-in', 'Tiba di Makassar dan check-in di penginapan dekat pantai.', 'Beachfront Resort', 'Lunch'),
+(7, 2, 'Beach Day at Makassar', 'Menikmati pantai Makassar dengan pasir hitam dan kegiatan pantai.', 'Beachfront Resort', 'Breakfast, Lunch'),
+(7, 3, 'Island Hopping', 'Tur ke pulau-pulau kecil di sekitar Makassar.', 'Beachfront Resort', 'Breakfast'),
+-- Medan Lake Getaway
+(8, 1, 'Arrival at Medan', 'Tiba di Medan dan check-in di hotel dekat danau.', 'Lakeview Hotel', 'Welcome Dinner'),
+(8, 2, 'Lake Exploration', 'Menikmati suasana tenang di tepi danau dan aktivitas air.', 'Lakeview Hotel', 'Breakfast'),
+(8, 3, 'Nature Walk', 'Jalan santai di sekitar danau dan hutan kecil di sekitar.', 'Lakeview Hotel', 'Breakfast'),
+-- Bromo Mountain Adventure
+(9, 1, 'Arrival and Check-in', 'Check-in di penginapan dekat Bromo.', 'Mountain Lodge', 'Dinner'),
+(9, 2, 'Bromo Exploration', 'Mendaki dan eksplorasi di sekitar Gunung Bromo.', 'Mountain Lodge', 'Lunch, Dinner'),
+(9, 3, 'Sunrise View', 'Melihat matahari terbit dari puncak Gunung Bromo.', 'Mountain Lodge', 'Breakfast'),
+-- Raja Ampat Diving Tour
+(10, 1, 'Diving Preparation', 'Orientasi dan persiapan menyelam di Raja Ampat.', 'Beachfront Resort', 'Lunch, Dinner'),
+(10, 2, 'First Diving Day', 'Hari pertama menyelam di lokasi terumbu karang Raja Ampat.', 'Beachfront Resort', 'Breakfast, Lunch'),
+(10, 3, 'Second Diving Day', 'Hari kedua menyelam di lokasi terbaik di Raja Ampat.', 'Beachfront Resort', 'Breakfast, Lunch'),
+(10, 4, 'Island Exploration', 'Tur keliling pulau untuk menikmati keindahan alam sekitar.', 'Beachfront Resort', 'Breakfast, Lunch'),
+(10, 5, 'Return Day', 'Hari terakhir untuk bersantai sebelum kembali.', 'Beachfront Resort', 'Breakfast'),
+-- Manado Diving Experience
+(11, 1, 'Diving Introduction', 'Persiapan dan pengenalan diving di Manado.', '3 Star Hotel', 'Lunch'),
+(11, 2, 'First Diving Session', 'Sesi pertama menyelam di perairan Manado.', '3 Star Hotel', 'Breakfast, Lunch'),
+(11, 3, 'Second Diving Session', 'Lanjutkan menyelam di lokasi terbaik di Manado.', '3 Star Hotel', 'Breakfast, Lunch'),
+(11, 4, 'Final Diving Day', 'Hari terakhir menyelam dan melihat keindahan bawah laut.', '3 Star Hotel', 'Breakfast'),
+-- Malang Flower Garden Tour
+(12, 1, 'Garden Visit', 'Mengunjungi kebun bunga di Malang yang penuh warna.', 'Guest House', 'Lunch'),
+(12, 2, 'City Exploration', 'Jelajahi pusat kota Malang dan kunjungi tempat wisata lokal.', 'Guest House', 'Breakfast'),
+(12, 3, 'Free Day', 'Hari bebas untuk menjelajahi lebih jauh atau berbelanja.', 'Guest House', 'Breakfast');

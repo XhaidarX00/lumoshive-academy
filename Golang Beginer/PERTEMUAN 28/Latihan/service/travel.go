@@ -23,3 +23,11 @@ func (s *Service) GetPageDataService(searchDate string, low_to_high string, page
 func (s *Service) PlaceDetailService(data *model.ResponsePlaceDetail, id int) error {
 	return s.Repo.PlaceDetailRepo(data, id)
 }
+
+func (s *Service) LocationByIdService(data *model.Locations) error {
+	return s.Repo.LocationByIdRepo(data)
+}
+
+func (s *Service) TourPLanByIdService(data *[]model.TourPLan, tour_id int) error {
+	return s.Repo.TourPLanByIdRepo(data, tour_id)
+}
